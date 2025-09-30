@@ -4,3 +4,17 @@
 #autoconf temp folders/files/logs
 autom4te.cache
 config.log
+
+log
+*.o
+
+*.vtu
+*.mod
+*.la
+*.lo
+*.stat
+
+*~
+*.pyc
+*.pyo
+__pycache__
