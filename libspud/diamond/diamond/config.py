@@ -18,7 +18,10 @@
 import os
 import os.path
 import sys
-import configparser
+try:
+    from configparser import ConfigParser, DuplicateSectionError
+except ImportError:
+    from ConfigParser import SafeConfigParser as ConfigParser, DuplicateSectionError  # older fallback
 
 from . import debug
 
@@ -30,12 +33,12 @@ dirs.append(os.path.join(os.path.expanduser('~'), ".diamond"))
 if "DIAMOND_CONFIG_PATH" in os.environ:
   dirs += reversed(os.environ["DIAMOND_CONFIG_PATH"].split(":"))
 
-config = configparser.ConfigParser()
+config = ConfigParser()
 config.read([os.path.join(path, "settings") for path in reversed(dirs)]) #reversed to load usr last
 
 try:
   config.add_section("colour")
-except configparser.DuplicateSectionError:
+except DuplicateSectionError:
   pass
 
 def __set_default(option, value):
