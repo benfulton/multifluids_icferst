@@ -269,8 +269,6 @@ contains
     call deallocate(stripped_mesh)
     deallocate(node_list)
 
-    ewrite(1,*) "Exiting strip_l2_halo"
-
   end subroutine strip_l2_halo
 
   subroutine adapt_mesh_periodic(old_positions, metric, new_positions, force_preserve_regions)
@@ -1034,12 +1032,9 @@ contains
     type(vector_field), pointer :: output_positions
     real :: dt
 
-    ewrite(1, *) "In adapt_state_first_timestep"
-
     call get_option(trim(base_path) // "/number_of_adapts", adapt_iterations)
 
     do i = 1, adapt_iterations
-      ewrite(2, "(a,i0,a,i0)") "Performing first timestep adapt ", i, " of ", adapt_iterations
 
       ! Recalculate diagnostics, as error metric formulations may need them
       call allocate_and_insert_auxilliary_fields(states)
@@ -1132,8 +1127,6 @@ contains
     type(integer_set) :: lock_faces
 
     real :: global_min_quality, quality_tolerance
-
-    ewrite(1, *) "In adapt_state_internal"
 
     show_reference_warnings=.true.
     if (present(suppress_reference_warnings)) &

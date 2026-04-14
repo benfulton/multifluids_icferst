@@ -315,8 +315,6 @@ module hydrostatic_pressure
     matrix => get_hydrostatic_pressure_cg_matrix(state, assemble_matrix=assemble_matrix)
     call allocate(rhs, hp%mesh, "HydrostaticPressureCGRHS")
     
-    ewrite(2,*) 'assembling matrix: ', assemble_matrix
-    
     call profiler_tic(hp, "assembly")
     call assemble_hydrostatic_pressure_cg(state, hp, matrix, rhs, assemble_matrix)
     call profiler_toc(hp, "assembly")

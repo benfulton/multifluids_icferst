@@ -1432,15 +1432,11 @@ contains
 
     type(mesh_type) :: new_mesh
 
-    ewrite(1,*) "Inside expand_positions_halo"
-
     new_mesh = expand_mesh_halo(positions%mesh)
     call allocate(new_positions, positions%dim, new_mesh, name=positions%name)
     new_positions%val(:,1:node_count(positions)) = positions%val
     call halo_update(new_positions)
     call deallocate(new_mesh)
-
-    ewrite(1,*) "Exiting expand_positions_halo"
 
   end function expand_positions_halo
 
@@ -1466,7 +1462,6 @@ contains
     integer :: proc, ele, sele, ele_uid, ufid, i, j, ele_info_size, lface
     logical :: has_surface_mesh, all_new_nodes
 
-    ewrite(1,*) "Inside expand_mesh_halo"
     nhalos = size(mesh%halos)
     old_halo => mesh%halos(nhalos)
     ele_halo => mesh%element_halos(size(mesh%element_halos))
@@ -1809,8 +1804,6 @@ contains
     integer, dimension(MPI_STATUS_SIZE) :: status
     integer :: comm, tag, ierr
     integer :: proc, i, j, node, my_rank, uid, owner
-
-    ewrite(1,*) "Inside expand_halo"
 
     nnlist => extract_nnlist(mesh)
 

@@ -259,8 +259,6 @@
             call deallocate(sumvolumefractions)
          end if
 
-         ewrite(1,*) 'Exiting calculate_diagnostic_phase_volume_fraction'
-
       end subroutine calculate_diagnostic_phase_volume_fraction
 
 

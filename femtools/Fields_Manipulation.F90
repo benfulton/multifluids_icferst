@@ -3738,7 +3738,6 @@ module fields_manipulation
       & renumber_permutation
     type(vector_field) :: positions_renumbered
 
-    ewrite(1, *) "In renumber_positions_trailing_receives"
     assert(positions%refcount%count == 1)
 
     nhalos = halo_count(positions)
@@ -3782,8 +3781,6 @@ module fields_manipulation
     end do
 #endif
 
-    ewrite(1, *) "Exiting renumber_positions_trailing_receives"
-
   end subroutine renumber_positions_trailing_receives
 
   subroutine renumber_positions(input_positions, permutation, output_positions, node_halo_ordering_scheme)
@@ -3798,8 +3795,6 @@ module fields_manipulation
     type(mesh_type) :: output_mesh
     integer :: ele, node, halo_num, lnode_halo_ordering_scheme, proc
     type(halo_type), pointer :: input_halo, output_halo
-
-    ewrite(1, *) "In renumber_positions"
 
     assert(size(permutation) == node_count(input_positions))
 
@@ -3918,8 +3913,6 @@ module fields_manipulation
 
     output_positions%option_path = input_positions%option_path
 
-    ewrite(1, *) "Exiting renumber_positions"
-
   end subroutine renumber_positions
 
   subroutine renumber_positions_elements(input_positions, permutation, output_positions, element_halo_ordering_scheme)
@@ -3936,8 +3929,6 @@ module fields_manipulation
     type(halo_type), pointer :: input_halo, output_halo
     integer, dimension(:), allocatable :: sndgln
     integer :: no_unique_facets
-
-    ewrite(1, *) "In renumber_positions_elements"
 
     assert(size(permutation) == ele_count(input_positions))
 
@@ -4034,8 +4025,6 @@ module fields_manipulation
     integer, dimension(:), allocatable :: inverse_permutation, receive_node, &
       & renumber_permutation
     type(vector_field) :: positions_renumbered
-
-    ewrite(1, *) "In renumber_positions_elements_trailing_receives"
 
     assert(positions%refcount%count == 1)
    

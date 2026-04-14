@@ -83,8 +83,6 @@ contains
     
     type(vector_field) :: new_positions
       
-    ewrite(1, *) "In adapt_state_prescribed"     
-    
     new_positions = adapt_state_prescribed_target(states, elapsed_time)
     call adapt_state_prescribed_internal(states, new_positions)    
     call deallocate(new_positions)
@@ -136,8 +134,6 @@ contains
     type(vector_field) :: old_positions, lnew_positions
     integer :: unique_sids
   
-    ewrite(1, *) "In adapt_state_prescribed_internal"
-    
     if(isparallel()) then
       FLExit("Prescribed adaptivity does not work in parallel")
     end if

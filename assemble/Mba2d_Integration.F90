@@ -114,8 +114,6 @@ module mba2d_integration
     type(scalar_field) :: sends_sfield, receives_sfield
 #endif
 
-    ewrite(1, *) "In adapt_mesh_mba2d"
-
     assert(all(metric%dim == 2))
 
     xmesh => input_positions%mesh

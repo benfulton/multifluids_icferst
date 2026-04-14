@@ -855,7 +855,6 @@ type(vector_field), intent(in), optional :: positions
     ! no cache - we just have to do it all over again
     have_cache=.false.
   end if
-  ewrite(1, *) 'Assembling matrix.'
 
   ! Note the explicitly-described options rcm, 1wd and natural are now not
   ! listed explicitly in the schema (but can still be used by adding the
@@ -1155,8 +1154,6 @@ logical, intent(in):: startfromzero
   type(mesh_type), pointer:: mesh
   logical, dimension(:), pointer:: inactive_mask
 
-  ewrite(1, *) 'Assembling RHS.'
-
   call profiler_tic(x, "field2petsc")
   if (present(matrix)) then
     inactive_mask => get_inactive_mask(matrix)
@@ -1204,16 +1201,10 @@ logical, intent(in):: startfromzero
 
   end if
 
-  ewrite(1, *) 'RHS assembly completed.'
-
   if (.not. startfromzero) then
-
-    ewrite(1, *) 'Assembling initial guess.'
 
     ! create PETSc vec for initial guess and result using above numbering:
     call field2petsc(x, petsc_numbering, y)
-
-    ewrite(1, *) 'Initial guess assembly completed.'
 
   end if
   call profiler_toc(x, "field2petsc")

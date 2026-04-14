@@ -190,14 +190,11 @@ contains
     call deallocate(lmap_AB)
     deallocate(lmap_AB)
 
-    ewrite(1, *) "Exiting intersection_finder"
 #else
     type(ilist) :: seeds
     type(inode), pointer :: node
     type(ilist), dimension(:), allocatable :: sub_map_AB
     
-    ewrite(1, *) "In intersection_finder"
-
     ! workaround gfortran issue: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85750
     map_AB%length = 0.0
 
@@ -223,7 +220,6 @@ contains
     deallocate(sub_map_AB)
     call deallocate(seeds)
 
-    ewrite(1, *) "Exiting intersection_finder"
 #endif
   
   end function intersection_finder

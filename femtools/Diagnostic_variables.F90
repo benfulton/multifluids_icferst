@@ -518,12 +518,9 @@ contains
     ! Iterator for the registered diagnostics
     type(registered_diagnostic_item), pointer :: iterator => NULL()
 
-    ewrite(1, *) "In initialise_diagnostics"
-
     ! Idempotency check
     if(default_stat%initialised) then
       ewrite(2, *) "Diagnostics already initialised"
-      ewrite(1, *) "Exiting initialise_diagnostics"
       return
     end if
     default_stat%initialised=.true.
@@ -903,8 +900,6 @@ contains
     end if
 
     call initialise_detectors(filename, state)
-
-    ewrite(1, *) "Exiting initialise_diagnostics"
 
   end subroutine initialise_diagnostics
 

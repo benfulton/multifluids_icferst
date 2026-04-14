@@ -196,8 +196,6 @@ contains
       call toc(TICTOC_ID_INTERPOLATION)
       call tictoc_report(2, TICTOC_ID_INTERPOLATION)
 
-      ewrite(1, *) "Exiting interpolate"
-      
       return
     end if
 
@@ -511,8 +509,6 @@ contains
 
     call finalise_geostrophic_interpolation(states_new)
     
-    ewrite(1, *) "Exiting interpolate"
-
   end subroutine interpolate
   
   function interpolate_field_consistent(option_path) result(interpolate)

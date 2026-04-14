@@ -61,8 +61,6 @@ contains
     type(element_type), pointer :: shape
     type(scalar_field) :: sizing
     
-    ewrite(1, *) "In adapt_mesh_1d"
-    
     assert(old_positions%dim == 1)
     assert(old_positions%mesh == metric%mesh)
         

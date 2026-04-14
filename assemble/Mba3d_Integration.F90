@@ -99,8 +99,6 @@ contains
     integer, dimension(:), allocatable :: iw
     integer :: iprint, ierr
 
-    ewrite(1, *) "In adapt_mesh_mba_3d"
-    
     assert(input_positions%dim == 3)
     assert(ele_loc(input_positions, 1) == 4)
 #ifdef DDEBUG

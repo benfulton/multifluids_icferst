@@ -905,8 +905,6 @@ module conservative_interpolation_module
 
     call finalise_tet_intersector
 
-    ewrite(1, *) "Exiting interpolation_galerkin_scalars"
-    
   end subroutine interpolation_galerkin_scalars
 
   subroutine interpolation_galerkin_single_state(old_state, new_state, map_BA)
@@ -943,8 +941,6 @@ module conservative_interpolation_module
       call deallocate(old_fields_state(i))
       call deallocate(new_fields_state(i))
     end do
-
-    ewrite(1, *) "Exiting interpolation_galerkin_multiple_states"
 
   end subroutine interpolation_galerkin_multiple_states
 

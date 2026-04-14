@@ -38,8 +38,6 @@ module zoltan_detectors
     type(detector_type), pointer :: detector => null(), detector_to_move => null()
     logical :: found_det_element
     
-    ewrite(1,*) "In prepare_detectors_for_packing"    
-    
     assert(num_ids == size(ndets_in_ele))
     assert(num_ids == size(to_pack_detector_lists))
 
@@ -113,8 +111,6 @@ module zoltan_detectors
        assert(ndets_in_ele(i) == to_pack_detector_lists(i)%length)
        total_det_to_pack=total_det_to_pack+to_pack_detector_lists(i)%length
     end do
-    ewrite(2,*) "Moved", total_det_to_pack, "detectors to to_pack_detector_lists"
-    ewrite(1,*) "Exiting prepare_detectors_for_packing"
     
   end subroutine prepare_detectors_for_packing
 

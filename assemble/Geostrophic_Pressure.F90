@@ -2802,8 +2802,6 @@ contains
       if(stat == SPUD_NO_ERROR) vtu_index = modulo(vtu_index, max_vtu_count)
     end if
 
-    ewrite(1, *) "Exiting initialise_geostrophic_interpolation_velocity"
-
   end subroutine initialise_geostrophic_interpolation_velocity
 
   subroutine finalise_geostrophic_interpolation_states(new_states)

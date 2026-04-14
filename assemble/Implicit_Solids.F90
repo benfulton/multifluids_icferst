@@ -1610,8 +1610,6 @@ contains
       call deallocate(new_fields_state(i))
     end do
 
-    ewrite(1, *) "Exiting interpolation_galerkin_multiple_states_femdem"
-
   end subroutine interpolation_galerkin_multiple_states_femdem
 
   !----------------------------------------------------------------------------
@@ -2470,8 +2468,6 @@ contains
     call finalise_tet_intersector
     call rtree_intersection_finder_reset()
 
-    ewrite(1, *) "Exiting interpolation_galerkin_scalars"
-    
   end subroutine interpolation_galerkin_scalars
 
   !----------------------------------------------------------------------------

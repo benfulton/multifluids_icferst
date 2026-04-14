@@ -78,8 +78,6 @@ module vertical_balance_pressure
     matrix => get_vertical_balance_pressure_matrix(state, assemble_matrix=assemble_matrix)
     call allocate(rhs, vbp%mesh, "VerticalBalancePressureRHS")
     
-    ewrite(2,*) 'assembling matrix: ', assemble_matrix
-    
     call profiler_tic(vbp, "assembly")
     call assemble_vertical_balance_pressure(state, vbp, matrix, rhs, assemble_matrix)
     call profiler_toc(vbp, "assembly")

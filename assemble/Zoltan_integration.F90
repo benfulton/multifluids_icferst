@@ -103,8 +103,6 @@ module zoltan_integration
     real :: minimum_quality
     integer :: flredecomp_input_procs = -1, flredecomp_target_procs = -1
 
-    ewrite(1,*) "In zoltan_drive"
-
     if (.not. present(flredecomping)) then
         flredecomp = .false.
     else
@@ -500,9 +498,7 @@ module zoltan_integration
     end if
 
     minimum_quality = minval(zoltan_global_element_quality)
-    ewrite(1,*) "local minimum element quality = ", minimum_quality
     call allmin(minimum_quality)
-    ewrite(1,*) "global minimum element quality = ", minimum_quality
 
     if (use_pain_functional) then
        ! libadaptivity terminates if for all possible operations, any of the affected
@@ -860,8 +856,6 @@ module zoltan_integration
     integer :: num_empty_partitions, empty_partition
     character (len = 10) :: string_load_imbalance_tolerance
 
-    ewrite(1,*) 'in zoltan_load_balance'
-
     num_nodes = zoltan_global_zz_halo%nowned_nodes
 
     ! Special case when flredecomping - don't check for empty partitions
@@ -1143,8 +1137,6 @@ module zoltan_integration
     integer(zoltan_int) :: ierr
     integer(zoltan_int), dimension(:), pointer :: import_to_part, export_to_part
 
-    ewrite(1,*) "In zoltan_migration_phase_one; objects to import: ", p1_num_import
-    ewrite(1,*) "In zoltan_migration_phase_one; objects to export: ", p1_num_export
     import_to_part => null()
     export_to_part => null()
 
@@ -1350,7 +1342,6 @@ module zoltan_integration
     ierr = Zoltan_Compute_Destinations(zz, zoltan_global_my_num_import, zoltan_global_my_import_global_ids, import_local_ids, zoltan_global_my_import_procs, &
          & num_export, export_global_ids, export_local_ids, export_procs)
     assert(ierr == ZOLTAN_OK)
-    ewrite(1,*) "In zoltan_migration_phase_two; objects to export: ", num_export
 
     ierr = Zoltan_Migrate(zz, zoltan_global_my_num_import, zoltan_global_my_import_global_ids, import_local_ids, zoltan_global_my_import_procs, &
          & import_to_part, num_export, export_global_ids, export_local_ids, export_procs, export_to_part)
@@ -1375,8 +1366,6 @@ module zoltan_integration
     integer :: universal_number, new_local_number
     type(integer_set) :: new_elements_we_actually_have
     integer, dimension(:), pointer:: neigh
-
-    ewrite(1,*) "In reconstruct_enlist"
 
     ! zoltan_global_new_elements currently contains the universal numbers of elements
     ! we don't fully have and won't be in the final mesh.
@@ -1514,8 +1503,6 @@ module zoltan_integration
     integer, dimension(:), allocatable :: sndgln
     integer :: universal_element_number
 
-    ewrite(1,*) "In reconstruct_senlist"
-
     ! zoltan_global_new_surface_elements currently contains the universal numbers of surface elements
     ! we don't fully have and won't be in the final mesh.
     ! So universal_surface_element_to_local_numbering here is just temporary.
@@ -1644,8 +1631,6 @@ module zoltan_integration
     integer :: universal_node_number, old_new_local_node_number, new_new_local_node_number
 
     integer, dimension(ele_count(zoltan_global_new_positions)) :: old_new_region_ids
-
-    ewrite(1,*) "In reconstruct_halo"
 
     num_import = 0
     do i=1,size(zoltan_global_receives)
@@ -1888,8 +1873,6 @@ module zoltan_integration
     ierr = Zoltan_Set_Fn(zz, ZOLTAN_OBJ_SIZE_MULTI_FN_TYPE, zoltan_cb_pack_field_sizes); assert(ierr == ZOLTAN_OK)
     ierr = Zoltan_Set_Fn(zz, ZOLTAN_PACK_OBJ_MULTI_FN_TYPE, zoltan_cb_pack_fields); assert(ierr == ZOLTAN_OK)
     ierr = Zoltan_Set_Fn(zz, ZOLTAN_UNPACK_OBJ_MULTI_FN_TYPE, zoltan_cb_unpack_fields); assert(ierr == ZOLTAN_OK)
-
-    ewrite(1,*) 'exiting initialise_transfer'
 
   end subroutine initialise_transfer
 

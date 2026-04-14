@@ -529,7 +529,6 @@ contains
     end if
     nwsrow = -1  ! Do not return surface element owners
 
-    ewrite(1, *) "Calling adptvy from adapt_mesh"
     call tic(TICTOC_ID_SERIAL_ADAPT)
 
 
@@ -599,7 +598,6 @@ contains
 #endif
 
 	call toc(TICTOC_ID_SERIAL_ADAPT)
-	ewrite(1, *) "Exited adptvy"
     deallocate(orgmtx)
     deallocate(enlbas)
     deallocate(elmreg)
