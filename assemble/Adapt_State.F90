@@ -231,8 +231,6 @@ contains
     integer, dimension(:), allocatable :: non_halo2_elements
     integer :: ele, j, non_halo2_count
 
-    ewrite(1,*) "Inside strip_l2_halo"
-
     allocate(non_halo2_elements(1:element_count(positions)))
     non_halo2_count = 0
     ele_loop: do ele=1, element_count(positions)
@@ -1086,8 +1084,6 @@ contains
 
     end if
 
-    ewrite(1, *) "Exiting adapt_state_first_timestep"
-
   end subroutine adapt_state_first_timestep
 
   subroutine adapt_state_internal(states, metric, initialise_fields, suppress_reference_warnings)
@@ -1494,8 +1490,6 @@ contains
     if(isparallel()) then
       call compute_domain_statistics(states)
     end if
-
-    ewrite(1, *) "Exiting adapt_state_internal"
 
   end subroutine adapt_state_internal
 

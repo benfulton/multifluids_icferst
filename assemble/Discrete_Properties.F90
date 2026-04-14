@@ -69,8 +69,6 @@ contains
 
     integer :: processed
 
-    ewrite(1, *) "In enforce_discrete_properties"
-
     mesh_cnt = option_count("/geometry/mesh")
     alg_cnt = size(algorithms)
     state_cnt = size(states)
@@ -78,13 +76,9 @@ contains
     do state = 1, state_cnt
       ! some fields require post processing that needs more than one mesh
       ! these are dealt with in this loop
-      ewrite(2, *) "Processing fields in state " // trim(states(state)%name)
-
       processed = 0
       alg_loop: do alg = 1, alg_cnt
         ! only actually care about one algorithm at the moment but for futureproofing we'll do this in a loop
-        ewrite(2, *) "  Considering algorithm " // trim(algorithms(alg))
-        
         do mesh_i = 1, mesh_cnt
           mesh => extract_mesh(states(state), mesh_i)
           call insert(alg_state, mesh, name=trim(mesh%name))

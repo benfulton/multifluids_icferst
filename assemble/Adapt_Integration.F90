@@ -277,8 +277,6 @@ contains
     integer, dimension(:), allocatable :: well_ids
     integer, dimension(2) :: shape
 
-    ewrite(1, *) "In adapt_mesh"
-
 #ifdef DDEBUG
     assert(input_positions%dim == dim)
     assert(ele_loc(input_positions, 1) == nloc)
@@ -303,7 +301,6 @@ contains
     intsiz = 0  ! Integer working memory size
     rlsiz = 0  ! Real working memory size
 
-    ewrite(1, *) "Calling adaptmem from adapt_mesh"
 #ifdef HAVE_ADAPTIVITY
     call adaptmem(nnod, nelm, szenls, nselm, totfre, &
       & xpctel, xpctnd, xpctse, &
@@ -329,7 +326,6 @@ contains
     ! Maximum number of nodes
     absolutemxnods = max_nodes(input_positions, expected_nodes(input_positions, int(xpctel / expected_elements_buffer), global = .false.))
     absolutemxnods = absolutemxnods * mxnods_buffer
-    ewrite(2, "(a,i0)") "Max. nodes: ", absolutemxnods
 
     ! Volume element list
     allocate(enlbas(nelm + 1))
@@ -762,7 +758,6 @@ contains
 
     deallocate(intarr)
     deallocate(rlarr)
-    ewrite(1, *) "Exiting adapt_mesh"
 
   end subroutine adapt_mesh
 

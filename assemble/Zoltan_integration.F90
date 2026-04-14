@@ -301,8 +301,6 @@ module zoltan_integration
 
     dumpno = dumpno + 1
 
-    ewrite(1,*) "Exiting zoltan_drive"
-
   end subroutine zoltan_drive
 
   subroutine setup_module_variables(states, final_adapt_iteration, zz, flredecomp, mesh_name)
@@ -989,8 +987,6 @@ module zoltan_integration
        node = p1_export_local_ids(i)
        assert(node_owned(zoltan_global_zz_halo, node))
     end do
-
-    ewrite(1,*) 'exiting zoltan_load_balance'
 
   end subroutine zoltan_load_balance
 

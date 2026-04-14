@@ -1096,9 +1096,6 @@ contains
 
     deallocate(zoltan_global_to_pack_detectors_list)
 
-    ewrite(2,*) "Packed ", total_det_packed, " detectors"    
-    ewrite(1,*) "Exiting zoltan_cb_pack_fields"
-    
     ierr = ZOLTAN_OK
     
   end subroutine zoltan_cb_pack_fields
@@ -1244,7 +1241,6 @@ contains
     
     assert(total_det_unpacked==zoltan_global_unpacked_detectors_list%length)
     ewrite(2,*) "Unpacked", zoltan_global_unpacked_detectors_list%length, "detectors"    
-    ewrite(1,*) "Exiting zoltan_cb_unpack_fields"
     
     ierr = ZOLTAN_OK
     

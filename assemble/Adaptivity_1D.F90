@@ -126,8 +126,6 @@ contains
     
     if(present(node_ownership)) call generate_1d_node_ownership(old_positions, new_positions, node_ownership)
               
-    ewrite(1, *) "Exiting adapt_mesh_1d"
-              
   end subroutine adapt_mesh_1d
   
   subroutine generate_1d_node_ownership(old_positions, new_positions, node_ownership)

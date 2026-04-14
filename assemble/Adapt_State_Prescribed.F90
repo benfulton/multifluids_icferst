@@ -89,8 +89,6 @@ contains
     call adapt_state_prescribed_internal(states, new_positions)    
     call deallocate(new_positions)
         
-    ewrite(1, *) "Exiting adapt_state_prescribed"
-        
   end subroutine adapt_state_prescribed
   
   function adapt_state_prescribed_target(states, elapsed_time) result(new_positions)
@@ -245,8 +243,6 @@ contains
     call incrementeventcounter(EVENT_ADAPTIVITY)
     call incrementeventcounter(EVENT_MESH_MOVEMENT)
     
-    ewrite(1, *) "Exiting adapt_state_prescribed_internal"
-      
   end subroutine adapt_state_prescribed_internal
   
   subroutine adapt_state_prescribed_module_check_options
