@@ -78,9 +78,6 @@ C
 C
       IF( GETFLG(BIGLST,NODLST,IPTR,1) ) GOTO 10
 c
-      ewrite(2,*) 'Edge flags cleared: ',cntedg
-      ewrite(2,*) 'Elements counted: ',cntelm
-c
       if( ierr .ne. 0 ) goto 900
 C
 C - Loop through nodes, clearing bit six of the flag
@@ -95,8 +92,6 @@ C
       IPTR = NXT
 C
       IF( GTNDFL(BIGLST,NODLST,IPTR,1) ) GOTO 15
-c
-      ewrite(2,*) 'Node flags cleared: ',cntnod
 c
       if( ierr .ne. 0 ) goto 900
 C

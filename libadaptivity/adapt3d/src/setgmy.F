@@ -86,9 +86,6 @@ C
          CNTS(I) = 0
       END DO
 C
-      ewrite(2,*) 
-     :     'Setting the edge geometry information...'
-C
 C - Loop through edges, clearing bits four and eight of the flag
 C
       CNTEDG = 0
@@ -329,13 +326,7 @@ C
 C
       IF( GETFLG(BIGLST,NODLST,IPTR,1) ) GOTO 20
 C
-      ewrite(2,*) 'Geometry edges: ',CNTGMY
-      ewrite(2,*) 'Internal edges: ',CNTINT
-C
       IPTR = STTBIG
-C
-      ewrite(2,*) 
-     :     'Setting the node geometry information...'
 C
       CNTGMY = 0
       CNTINT = 0
@@ -504,16 +495,6 @@ C
       IPTR = NXT
 C
       IF( GETFLG(BIGLST,NODLST,IPTR,1) ) GOTO 30
-C
-      ewrite(2,*) 'Geometry nodes: ',CNTGMY
-      ewrite(2,*) 'Splitter nodes: ',CNTSPL
-      ewrite(2,*) 'Internal nodes: ',CNTINT
-c
-      ewrite(2,*) 'Count of dot products:'
-      do i = 1, 20
-        ewrite(2,*) 
-     :        'Greater than ',cuts(21-i),' :   ',cnts(21-i)
-      end do
 C
 c      PRINT*,'Leaving SETGMY'
 c      print*,'Geometry setup completed!'

@@ -349,10 +349,6 @@ C
 C
          IF( ABS(ELSLFT-LSTLFT) .EQ. 4000 ) THEN
             LSTLFT = ELSLFT
-            ewrite(1,3)
-     :           'LEFT/TOTAL:',ELSLFT,NELEMS,
-     :           '      ADD/SUB/CHK:',NELADD,NELSUB,NELCHK,
-     :           '      NODES:',NUMNDS
   3         format( a, 2i8, a, 3i8, a, i8 )
             NELADD = 0
             NELSUB = 0

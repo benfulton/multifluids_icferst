@@ -95,21 +95,12 @@ C
       STTBIG = 1
       ENDBIG = -1
 C
-      ewrite(2,*)
-     :     'Setting up initial integer list pointers...',MAXBIG
-C
       CALL INITLS( EMTBIG, BIGLST, SIZBIG, NXTBIG, LSTBIG, MAXBIG )
-C
-      ewrite(2,*) 
-     :     'Setting up initial real list pointers...',MXNODS
 C
       CALL INIRLS( EMTNOD, NODLST, SIZNOD, NXTNOD, LSTNOD, MXNODS )
 C
       STTNOD = 1
       STFRND = 1
-C
-      ewrite(2,*) 
-     :     'Creating node list...',debug
 C
       XMAX = NODX(1)
       YMAX = NODY(1)
@@ -176,9 +167,6 @@ C
 C
       IF( NPRDND .GT. 1 ) THEN
 C
-         ewrite(2,*) 
-     :        'Flagging periodic nodes... ',nprdnd
-C
          DO I = 1, NPRDND
             J = PRDNDS(I)
             CALL STNDFL( BIGLST, NODLST, J, 7, .TRUE. )
@@ -190,9 +178,6 @@ C
       IF( NNOD .GT. PNOD ) THEN
 C
 C - flag halo (receive) nodes (both flag bits 8 & 9)
-C
-         ewrite(2,*) 
-     :        'Flagging halo nodes...'
 C
          DO ILN = PNOD+1, NNOD
             CALL STNDFL( BIGLST, NODLST, ILN, 8, .TRUE. )
@@ -234,9 +219,6 @@ C
          STOP
 C
       ELSE
-C
-         ewrite(2,*)
-     :        'Creating 3D element and edge list...'
 C
          DO IELM = 1, NELM
             if( debug ) then
@@ -505,14 +487,6 @@ C
       CALL SETGMY( BIGLST, NODLST, SRFGMY, CLCGMY,
      :             NSELM, SZSNLS, SNLBAS, SNLIST, SURFID )
 C
-      ewrite(2,*) ' '
-      ewrite(2,*) 
-     :     '++++++++++ Finished making mesh ++++++++++++'
-      ewrite(2,*) 
-     :     'STTBIG,EMTBIG,ENDBIG: ',STTBIG,EMTBIG,ENDBIG
-      ewrite(2,*) 
-     :     'NELEMS,NEDGES: ',NELEMS,NEDGES
-      ewrite(2,*) ' '
       RETURN
       END
 C

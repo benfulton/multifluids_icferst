@@ -449,10 +449,6 @@ C
          GOTO 999
       END IF
 C
-      ewrite(1,'(A,I9,A)')
-     :     '--- ADPTVY: Space set aside for about',
-     :     2*MAXBIG/9,' elements'
-C
       IF( 2*MAXBIG/9 .LT. 1.2*XPCTEL ) then
          ewrite(0,'(a)')
      :      '+++ ADPTVY: WARNING: MAY NOT BE ENOUGH SPACE FOR ELEMENTS'
@@ -477,10 +473,6 @@ C - maximum before complaining)
 C
       IF( ABSOLUTEMXNODS .GT. 0 )
      :         MXNODS = min(MXNODS, ABSOLUTEMXNODS*10/9)
-C
-      ewrite(1,'(A,I10,A)')
-     :     '--- ADPTVY: Space set aside for',
-     :     MXNODS,' nodes'
 C
       IF( MXNODS .LT. 1.2*XPCTND ) then
          ewrite(0,'(a)')
@@ -620,25 +612,7 @@ c            FLCHK1 = 0
 c         ELSE
 c            ANGLEFACT = 0.0
 c         END IF
-C
-         IF( .NOT. NOCNCT .OR. TOGTHR ) THEN
-C
-            IF( TOGTHR ) THEN
-               IF( NOCNCT ) THEN
-                  ewrite(1,'(A,I3,1PE13.5)')
-     :              '--- Starting node move adapt of sweep',I*2-1,
-     :              ANGLEFACT
-               ELSE
-                  ewrite(1,'(A,I3,1PE13.5)')
-     :              '--- Starting connect & move adapt of sweep',I*2-1,
-     :              ANGLEFACT
-               END IF
-            ELSE
-               ewrite(1,'(A,I3,1PE13.5)')
-     :              '--- Starting connectivity adapt of sweep',I*2-1,
-     :              ANGLEFACT
-            END IF
-C
+CC
 C - an adaptive sweep with no node movement (element division is also
 C - inactive at the moment)
 C
@@ -665,8 +639,6 @@ C
                NWNNOD = -1
                GOTO 999
             END IF
-C
-         END IF
 C
 c         goto 600
 C

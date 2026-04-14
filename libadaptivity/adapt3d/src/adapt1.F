@@ -235,11 +235,6 @@ C
       NELCHK = 0
 c      lstlft = elslft
 C
-      ewrite(1,9) '>>> Min/max edges: ',c,b
-      ewrite(1,9) '>>> Min/max in-spheres: ',f,e
-c      print*,'>>> Edge / in-sphere functional sums: ',s,t
-      ewrite(1,9)
-     :       '>>> GLOBAL MESH FUNCTIONAL & element ave: ',GF,u/nelems
       gf = 1.0
 c      pause
 C
@@ -284,22 +279,8 @@ C
 c
 c      print*,'   done clearing flags'
 C
-      ewrite(1,6)
-     :     'Top of BIGLST & NODLST:',TOPBIG,TOPNOD
-C
       IF( IERR .NE. 0 ) RETURN
 c
-      if( .not. mvnode ) then
-         ewrite(1,8)
-     :        '--- ADAPT1: Node movement OFF...'
-      else if( minchg .lt. 0.0 ) then
-         ewrite(1,8)
-     :        '--- ADAPT1: Node movement in OVERSHOOT mode...'
-      else
-         ewrite(1,8)
-     :        '--- ADAPT1: Node movement in NORMAL mode...'
-      end if
-C
 c      ELCTMN = (NELEMS/500)*500 - 500
 c      ELCTMX = ELCTMN + 1000
 C
@@ -1099,9 +1080,6 @@ c            TOTSUB = TOTSUB + NELSUB
 c            TOTCHK = TOTCHK + NELCHK
             if( lstlft .ne. elslft ) gothere = 0
 c
-            ewrite(1,3) 'LEFT/TOTAL:',ELSLFT,NELEMS,
-     :              '      ADD/SUB/CHK:',NELADD,NELSUB,NELCHK,
-     :              '      NODES:',NUMNDS
 c            if( elslft .eq. 3100 .and. nelems .eq. 12553 .and.
 c     :          neladd .eq. 2858 .and. nelsub .eq. 2814 .and.
 c     :          nelchk .eq. 3352 .and. numnds .eq. 2922 ) then
@@ -1141,10 +1119,6 @@ C
             ewrite(0,8)
      :           '+++ WARNING: STUCK IN A LOOP???'
             LSTLFT = ELSLFT
-            ewrite(0,3)
-     :           'LEFT/TOTAL:',ELSLFT,NELEMS,
-     :           '      ADD/SUB/CHK:',NELADD,NELSUB,NELCHK,
-     :           '      NODES:',NUMNDS
             NELADD = 0
             NELSUB = 0
             NELCHK = 0
@@ -1155,19 +1129,11 @@ C
      :                            .and. .not. goterr ) THEN
             ewrite(0,8)
      :           '+++ Warning: loop is looking likely...'
-            ewrite(0,3)
-     :           'LEFT/TOTAL:',ELSLFT,NELEMS,
-     :           '      ADD/SUB/CHK:',NELADD,NELSUB,NELCHK,
-     :           '      NODES:',NUMNDS
             goterr = .TRUE.
          ELSE IF( (1.0*NELCHK)/1000 .GT. 1.0*NELEMS
      :                            .and. .not. shwchg ) THEN
             ewrite(0,8)
      :           '+++ Warning: may be stuck in a loop...'
-            ewrite(0,3)
-     :           'LEFT/TOTAL:',ELSLFT,NELEMS,
-     :           '      ADD/SUB/CHK:',NELADD,NELSUB,NELCHK,
-     :           '      NODES:',NUMNDS
             shwchg = .TRUE.
          else if( mvcnt .gt. 1100 ) then
             ewrite(-1,8)
@@ -1604,20 +1570,7 @@ C
          GOTO 960
       END IF
 C
-      ewrite(1,9)
-     :     '--- Info: sum of reductions:',CHANGE
-      ewrite(1,6)
-     :     '--- Info: total elems checked:',TELCHK
-      ewrite(1,6)
-     :     '--- Info: total edges checked:',TEDCHK
-      ewrite(1,6)
-     :     '--- Info: total nodes checked:',TNDCHK
-C
       ewrite(1,8) ' '
-      ewrite(1,'(A,i8,A,i8,A,i8)')
-     :     '    Nodes:',NUMNDS,
-     :     '       Elements:',NELEMS,
-     :     '       Edges:',NEDGES
 c      goterr = .true.
       if( goterr ) then
          ewrite(3,6)

@@ -233,16 +233,10 @@ C
          DO I = 1, NPRDND
             j = prdnds(i)
             PRDNDS(I) = INT( NODLST(17,PRDNDS(I)) )
-            ewrite(2,*) 
-     :           '  periodic renumber: ',j,prdnds(i)
          END DO
 C
       END IF
 c
-      ewrite(2,*) 
-     :     'Finished new node data'
-      ewrite(2,*) 
-     :     'Geom,split,int: ',cntgmy,cntspl,cntint
 C
       CNTINT = 0
       CNTGMY = 0
