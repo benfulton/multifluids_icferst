@@ -510,10 +510,6 @@ C
 C
       END IF
 c
-      ewrite(2,*) 
-     :     'Finished new element data'
-      ewrite(2,*) 
-     :     'Geom ed, int ed: ',cntgmy,cntint
       nusfid = count(srfcnt>0)
       if(nusfid.lt.200) then
          ewrite(2,*)
@@ -533,8 +529,6 @@ c
 C
       IF( NPROC .GT. 1 ) THEN
 C
-         ewrite(2,*) 
-     :        'Working out new gather array...'
          DO I = 1, NGATH
             INOD = GATHER(I)
             INOD = INT(NODLST(17,INOD))
@@ -551,8 +545,6 @@ C
             GATHER(I) = INOD
          END DO
 C
-         ewrite(2,*) 
-     :        'Working out new scatter array...'
          DO I = 1, NHALO
             INOD = SCATER(I)
             INOD = INT(NODLST(17,INOD))
@@ -571,8 +563,6 @@ C
          END DO
 C
       END IF
-      ewrite(2,*) 
-     :     'Checking local node ordering...'
 C
       do i = 2, 8
          m(i) = 0.0
@@ -642,10 +632,6 @@ c         print*,'   vol,rad,asp ',avol,arad,asp
             MINRAS = ASP
          END IF
       END DO
-      ewrite(2,*) 
-     :     'VOLSUM,ASPAVE: ',VOLSUM,ASPAVE/NELM
-      ewrite(2,*) 
-     :     'Maximum asp,vol,rad: ',maxasp,maxavl,maxard
       if( debug ) then
         ipos = enlbas(maxela)
         inod = enlist(ipos+1)
@@ -657,8 +643,6 @@ c         print*,'   vol,rad,asp ',avol,arad,asp
         inod = enlist(ipos+4)
         print*,'  node 4 : ',nodx(inod),nody(inod),nodz(inod)
       end if
-      ewrite(2,*) 
-     :     'Maximum vol,rad,asp: ',maxvol,maxvrd,maxvas
       if( debug ) then
         ipos = enlbas(maxelv)
         inod = enlist(ipos+1)
@@ -670,8 +654,6 @@ c         print*,'   vol,rad,asp ',avol,arad,asp
         inod = enlist(ipos+4)
         print*,'  node 4 : ',nodx(inod),nody(inod),nodz(inod)
       end if
-      ewrite(2,*) 
-     :     'Minimum vol,rad,asp: ',minvol,minvrd,minvas
       if( debug ) then
         ipos = enlbas(minelv)
         inod = enlist(ipos+1)
@@ -683,8 +665,6 @@ c         print*,'   vol,rad,asp ',avol,arad,asp
         inod = enlist(ipos+4)
         print*,'  node 4 : ',nodx(inod),nody(inod),nodz(inod)
       end if
-      ewrite(2,*) 
-     :     'Minimum rad,vol,asp: ',minrad,minrvl,minras
       if( debug ) then
         ipos = enlbas(minelr)
         inod = enlist(ipos+1)
@@ -717,9 +697,7 @@ c
 c      print*,'ENLBAS: ',(enlbas(i),i=1,nelm+1)
 c      print*,'ENLIST: ',(enlist(i),i=1,szenls)
 c
-      ewrite(2,*) 
-     :     'Finished checking local node ordering'
-C
+
   6   format( a, i7, a )
   7   format( a, 3(1pe13.5) )
   8   format( 2i7, 3(1pe13.5) )

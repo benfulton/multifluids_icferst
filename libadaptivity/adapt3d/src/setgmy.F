@@ -107,10 +107,6 @@ C
 C
       IF( GETFLG(BIGLST,NODLST,IPTR,1) ) GOTO 10
 C
-      ewrite(2,*) 
-     :     'Edge flags cleared: ',cntedg
-      ewrite(2,*) 
-     :     'Elements counted: ',cntelm
 C
 C - Loop through nodes, setting bits six and nine of the flag
 C - Note that bit six being set (TRUE) indicates the node has to be
@@ -129,9 +125,6 @@ C
 C
       IF( GTNDFL(BIGLST,NODLST,IPTR,1) ) GOTO 15
 c
-      ewrite(2,*) 
-     :     'Node flags cleared: ',cntnod
-C
 C - Loop through elements, picking out edges
 C
       CNTGMY = 0

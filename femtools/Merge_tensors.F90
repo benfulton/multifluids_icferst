@@ -172,8 +172,6 @@ module merge_tensors
 
       assert(fielda%mesh%nodes == fieldb%mesh%nodes)
 
-      ewrite(2,*) "Merging tensor fields."
-
       do i=1,fielda%mesh%nodes
         call merge_tensor(fielda%val(:, :, i), fieldb%val(:, :, i), aniso_min)
       end do

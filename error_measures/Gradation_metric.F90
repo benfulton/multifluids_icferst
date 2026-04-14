@@ -60,8 +60,6 @@ module gradation_metric
       gamma0 = 1.5
     end if
 
-    ewrite(2,*) 'gradation: ', use_gradation_metric, gamma0
-    
   end subroutine initialise_gradation_metric
 
   subroutine form_gradation_metric(positions, error_metric, noits)

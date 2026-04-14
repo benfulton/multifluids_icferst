@@ -1523,13 +1523,16 @@ contains
                         end if
                         if( have_option( '/io/stat/output_before_adapts' ) ) call write_diagnostics( state, current_time, dt, &
                             itime, not_to_move_det_yet = .true. , non_linear_iterations = FPI_eq_taken)
-                        call run_diagnostics( state )
+                        !call run_diagnostics( state )
+
+                        ewrite(1,*) "adapt_mesh_mp: Calling adapt_state at time step ", itime
                         call adapt_state( state, metric_tensor, suppress_reference_warnings = .true.)
+                        
                         call update_state_post_adapt( state, metric_tensor, dt, sub_state, nonlinear_iterations, &
                             nonlinear_iterations_adapt )
                         if( have_option( '/io/stat/output_after_adapts' ) ) call write_diagnostics( state, current_time, dt, &
                             itime, not_to_move_det_yet = .true. )
-                        call run_diagnostics( state )
+                        !call run_diagnostics( state )
                     end if Conditional_Adapt_by_TimeStep
                 elseif( have_option( '/mesh_adaptivity/prescribed_adaptivity' ) ) then !!$ Conditional_Adaptivity:
                     Conditional_Adapt_by_Time: if( do_adapt_state_prescribed( current_time ) ) then
@@ -1537,6 +1540,7 @@ contains
                         if( have_option( '/io/stat/output_before_adapts' ) ) call write_diagnostics( state, current_time, dt, &
                             timestep, not_to_move_det_yet = .true. )
                         call run_diagnostics( state )
+                        ewrite(1,*) "Calling adapt_state_prescribed at time ", current_time
                         call adapt_state_prescribed( state, current_time )
                         call update_state_post_adapt( state, metric_tensor, dt, sub_state, nonlinear_iterations, &
                             nonlinear_iterations_adapt)
