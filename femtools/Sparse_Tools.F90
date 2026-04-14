@@ -492,8 +492,6 @@ contains
        ldiag=.true.
     end if
 
-    ewrite(2, *) "SUBROUTINE POSINM()"
-
     ! Initalise the linked lists
     ALLOCATE( lMatrix(NNodes2) )
     DO I=1, NNodes2
@@ -504,8 +502,6 @@ contains
        lMatrix(I)%row => List
        NULLIFY(List)
     END DO
-
-    ewrite(2, *) "Constructing lMatrix using linked-lists"
 
     ! The first entry on each row is already present.
     entries=NNodes2
@@ -578,8 +574,6 @@ contains
        END DO
     END DO
 
-    ewrite(2, *) "Compressing matrix"
-
     ! Exclude the diagonal if needed.
     if (.not.ldiag) then
        entries=entries-diag_cnt
@@ -592,7 +586,6 @@ contains
 
     DEALLOCATE( lMatrix )
 
-    ewrite(2, *) "END SUBROUTINE POSINM"
     RETURN
   END SUBROUTINE posinm
 
@@ -664,8 +657,6 @@ contains
     !local variables
     integer::ptr,irow
     TYPE(node), POINTER::Current, Next
-
-    ewrite(2,*) "subroutine compress_sparsity"
 
     ! From sparsity write COLM, FINDRM and CENTRM
     ! linked list as we go

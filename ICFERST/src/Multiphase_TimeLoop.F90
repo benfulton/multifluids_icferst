@@ -665,7 +665,7 @@ contains
                 !#=================================================================================================================
 
               !for the diagnostic field, now it seems to be working fine...
-                ewrite(2,*) '  NEW ITS', its
+                ewrite(2,*) '  NEW NONLINEAR ITERATION', its
                 !if adapt_mesh_in_FPI, relax the convergence criteria, since we only want the approx position of the flow
                 if (adapt_mesh_in_FPI) call adapt_mesh_within_FPI(ExitNonLinearLoop, adapt_mesh_in_FPI, its, 1)
 
@@ -725,7 +725,7 @@ contains
                 !# Andreas. I added a flag in the Conditional_ForceBalanceEquation to eiher enter or not.
                 !#    TODO. This has to be updated with adaptivity as well.
                 !#=================================================================================================================
-                !$ Now solving the Momentum Equation ( = Force Balance Equation )
+                !# Now solving the Momentum Equation ( = Force Balance Equation )
                 Conditional_ForceBalanceEquation: if ( solve_force_balance .and. EnterSolve ) then
                     !if (getprocno() == 1 .and. its==1) print*, "Time step is:", itime
                     CALL FORCE_BAL_CTY_ASSEM_SOLVE( state, packed_state, &
@@ -900,6 +900,7 @@ contains
                 after_adapt=.false.
                 its = its + 1
                 first_nonlinear_time_step = .false.
+                ewrite(2,*) '  END OF NONLINEAR ITERATION', its-1
             end do Loop_NonLinearIteration
 
             if (nonLinearAdaptTs) then
@@ -993,24 +994,20 @@ contains
             ! Compute viscosity
             call compute_viscosity_EOS( state, Mdims )
             !Now compute diagnostics
+            call log_pre_vtu_sanity("PRE-DIAG")
             call calculate_diagnostic_variables( state, exclude_nonrecalculated = .true. )
+            call log_pre_vtu_sanity("POST-DIAG-STD")
             !calculate_diagnostic_variables_new <= computes other diagnostics such as python-based fields
             call calculate_diagnostic_variables_new( state, exclude_nonrecalculated = .true. )!sprint_to_do it used to zerod the pressure
+            call log_pre_vtu_sanity("POST-DIAG-NEW")
 
             !!######################DIAGNOSTIC FIELD CALCULATION TREAT THIS LIKE A BLOCK######################
 
             !Now we ensure that the time-step is the correct one
             if (write_all_stats) call write_diagnostics( state, current_time, dt, itime , non_linear_iterations = FPI_eq_taken) ! Write stat file
 
-            if (is_porous_media .and. getprocno() == 1) then
-                if (have_option('/io/Courant_number')) then!printout in the terminal
-                    ewrite(0,'(a, 1PE10.3, 1PE10.3)') "Courant_number and shock-front Courant number: ", Courant_number(1), Courant_number(2)
-                else !printout only in the log
-                    ewrite(1,'(a, 1PE10.3, 1PE10.3)') "Courant_number and shock-front Courant number: ", Courant_number(1), Courant_number(2)
-                end if
-            end if
-
             !Call to create the output vtu files, if required and also checkpoint
+            call log_pre_vtu_sanity("PRE-VTU-DUMP")
             call create_dump_vtu_and_checkpoints()
 
             call petsc_logging(3,stages,ierrr,default=.true.)
@@ -1166,6 +1163,8 @@ contains
                 exit Loop_Time
             end if
             first_time_step = .false.
+
+            ewrite(2,*) '    END DT', itime
 
         end do Loop_Time
 
@@ -1422,6 +1421,7 @@ contains
                         call write_diagnostics( state, current_time, dt, itime/dump_period_in_timesteps , non_linear_iterations = FPI_eq_taken)  ! Write stat file
                     end if
                     not_to_move_det_yet = .false. ;
+                    call log_pre_vtu_sanity("IN-CREATE-DUMP-TIMESTEP")
                     call write_state_units( dump_no, Mdims, state ) ! Now writing into the vtu files
                 end if Conditional_Dump_TimeStep
             else if (have_option('/io/dump_period')) then
@@ -1441,6 +1441,7 @@ contains
                     not_to_move_det_yet = .false. ;
                     !Time to compute the self-potential if required
                     if (have_option("/porous_media/SelfPotential")) call Assemble_and_solve_SP(Mdims, state, packed_state, ndgln, Mmat, Mspars, CV_funs, CV_GIdims)
+                    call log_pre_vtu_sanity("IN-CREATE-DUMP-REALTIME")
                     call write_state_units( dump_no, Mdims, state ) ! Now writing into the vtu files
                 end if Conditional_Dump_RealTime
             end if
@@ -1739,6 +1740,25 @@ contains
         nu % val = u % val
         nuold % val = uold % val
     end subroutine set_nu_to_u
+
+    !> @brief Log field sanity statistics (min, max, NaN, Inf) at key VTU-pipeline checkpoints.
+    !>        Iterates over all phases' scalar fields in state, reporting min/max and flagging
+    !>        any NaN (ewrite level 0 = always printed) or Inf values.
+    subroutine log_pre_vtu_sanity(tag)
+        character(len=*), intent(in) :: tag
+        integer :: istate_ls, f_ls, nnan_ls, ninf_ls
+        type(scalar_field), pointer :: sf_ls
+        do istate_ls = 1, size(state)
+            if (.not. associated(state(istate_ls)%scalar_fields)) cycle
+            do f_ls = 1, size(state(istate_ls)%scalar_fields)
+                sf_ls => state(istate_ls)%scalar_fields(f_ls)%ptr
+                if (.not. associated(sf_ls%val)) cycle
+                if (size(sf_ls%val) == 0) cycle
+                nnan_ls = count(sf_ls%val /= sf_ls%val)
+                ninf_ls = count(abs(sf_ls%val) > 0.5 * huge(sf_ls%val(1)))
+            end do
+        end do
+    end subroutine log_pre_vtu_sanity
 
     !>@author : Pablo Salinas
     !>@brief In this subroutine we control all the necessary steps to adapt the mesh within the non-linear loop.

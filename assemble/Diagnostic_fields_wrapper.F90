@@ -80,8 +80,6 @@ contains
     ! An array of submaterials of the current phase in state(istate).
     type(state_type), dimension(:), pointer :: submaterials
     
-    ewrite(1, *) "In calculate_diagnostic_variables"
- 
     do i = 1, size(state)
 
        ! start of fields that can be called through the generic calculate_diagnostic_variable
@@ -601,8 +599,6 @@ contains
        end if
 
     end do
-    
-    ewrite(1, *) "Exiting calculate_diagnostic_variables"
     
   contains
   

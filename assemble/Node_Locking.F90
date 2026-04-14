@@ -60,7 +60,6 @@ contains
 
     if(.not. have_option(base_path) .and. .not. present(nodes_to_lock)) then
       allocate(locked_nodes(0))
-      ewrite(2, *) "Number of locked nodes = 0"
       return
     end if
 
@@ -88,7 +87,6 @@ contains
     if (present(nodes_to_lock)) is_node_locked = is_node_locked + nodes_to_lock
 
     allocate(locked_nodes(count(is_node_locked /= 0)))
-    ewrite(2, "(a,i0)") "Number of locked nodes = ", size(locked_nodes)
     index = 0
     do i = 1, size(is_node_locked)
       if(is_node_locked(i) /= 0) then

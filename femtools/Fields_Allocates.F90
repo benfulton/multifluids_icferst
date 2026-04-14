@@ -1820,8 +1820,6 @@ contains
 #endif
 
     mesh%faces%unique_surface_element_count = stotel
-    ewrite(2,*) "Number of surface elements: ", bdry_count
-    ewrite(2,*) "Number of unique surface elements: ", stotel
 
     mesh%faces%boundary_ids=0
     ! copy in supplied boundary ids
@@ -2855,9 +2853,6 @@ contains
     ladd_nelist = (present_and_true(nelist) .or. ladd_eelist) .and. .not. associated(mesh%adj_lists%nelist)
 
     if(ladd_nnlist .and. ladd_nelist .and. ladd_eelist) then
-      ewrite(2, *) "Adding node-node list to mesh " // trim(mesh%name)
-      ewrite(2, *) "Adding node-element list to mesh " // trim(mesh%name)
-      ewrite(2, *) "Adding element-element list to mesh " // trim(mesh%name)
       allocate(mesh%adj_lists%nnlist)
       allocate(mesh%adj_lists%nelist)
       allocate(mesh%adj_lists%eelist)

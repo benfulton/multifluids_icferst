@@ -98,8 +98,6 @@ module gradation_metric
     dim = error_metric%dim(1)
     debug_metric = have_option("/mesh_adaptivity/hr_adaptivity/debug/write_metric_stages")
 
-    ewrite(2,*) "++: Applying gradation"
-
     mesh = error_metric%mesh
     domain_scale = domain_length_scale(positions)
     call initialise_boundcount(mesh, positions)
@@ -255,7 +253,6 @@ module gradation_metric
     call deallocate(nodefield)
 #endif
 
-  ewrite(2,*) "Finished gradation algorithm: global iterations == ", global_its
   if (present(noits)) noits = global_its
   end subroutine form_gradation_metric
 

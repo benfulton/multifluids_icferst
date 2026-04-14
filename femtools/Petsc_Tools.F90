@@ -751,9 +751,6 @@ contains
 
 
     if (associated(petsc_numbering%halo)) then
-       if (size(fields)>1) then
-          ewrite(2, *) 'Updating of halo of multiple scalar fields needs to be improved.'
-       end if
        do b=1, size(fields)
           call profiler_tic(fields(b), "petsc2field")
           ! Always update on the level 2 halo to ensure that the whole
@@ -849,7 +846,6 @@ contains
 
     ! Update the halo:
     if (associated(petsc_numbering%halo)) then
-       ewrite(2, *) '*** Updating of halo of vector_fields needs to be improved.'
        do i=1, size(fields)
           ! Always update on the level 2 halo to ensure that the whole
           ! field is well defined.

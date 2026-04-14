@@ -416,19 +416,12 @@ contains
     
     real, dimension(:), allocatable :: buffer
 
-    if (.not. present_and_false(verbose)) then
-      ewrite(2, *) "Updating halo " // trim(halo%name) // " for field " // trim(s_field%name)
-    end if
-    
     select case(s_field%field_type)
       case(FIELD_TYPE_NORMAL)
         assert(associated(s_field%val))
         if(s_field%val_stride == 1) then
           call halo_update(halo, s_field%val)
         else
-          if (.not. present_and_false(verbose)) then
-            ewrite(2,*) "Need to copy into temp. buffer because field has stride", s_field%val_stride
-          end if
           ! A stride argument should be passed to halo_update_real_array. For
           ! now just use a buffer.
           allocate(buffer(node_count(s_field)))
@@ -454,10 +447,6 @@ contains
     
     integer :: i
     
-    if (.not. present_and_false(verbose)) then
-      ewrite(2, *) "Updating halo " // trim(halo%name) // " for field " // trim(v_field%name)
-    end if
-
     select case(v_field%field_type)
       case(FIELD_TYPE_NORMAL)
         call halo_update(halo, v_field%val)
@@ -477,10 +466,6 @@ contains
     logical, intent(in), optional :: verbose ! set to .false. to leave out any verbosity 1 or 2 messages
 
     integer :: i, j
-
-    if (.not. present_and_false(verbose)) then
-      ewrite(2, *) "Updating halo " // trim(halo%name) // " for field " // trim(t_field%name)
-    end if
 
     select case(t_field%field_type)
       case(FIELD_TYPE_NORMAL)              

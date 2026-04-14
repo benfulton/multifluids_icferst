@@ -108,31 +108,22 @@
            lstartfromzero,inner_m,ctp_m,ct_m,x%option_path,pmat, &
            rhs, velocity, state, inner_mesh, auxiliary_matrix, ct_m_is_gradient)
 
-      ewrite(2,*) 'Create RHS and solution Vectors in PETSc Format'
       ! create PETSc vec for rhs using above numbering:
       call field2petsc(rhs, petsc_numbering, b)
-      ewrite(1, *) 'RHS assembly completed.'
       if (.not. lstartfromzero) then
-         ewrite(1, *) 'Assembling initial guess.'
          ! create PETSc vec for initial guess and result using above numbering:
          call field2petsc(x, petsc_numbering, y)
-         ewrite(1, *) 'Initial guess assembly completed.'
       end if
 
-      ewrite(2,*) 'Entering Core PETSc Solve'
       ! Solve Ay = b using KSP and PC. Also check convergence. We call this the inner solve.
       call petsc_solve_core(y, A, b, ksp, petsc_numbering, solver_option_path, lstartfromzero, &
            literations, sfield=x, x0=x%val, nomatrixdump=.true.)
 
-      ewrite(2,*) 'Copying PETSc solution vector into designated Fluidity array'
       ! Copy back the result into the fluidity solution array (x) using the PETSc numbering:
       call petsc2field(y, petsc_numbering, x, rhs)
       
-      ewrite(2,*) 'Destroying all PETSc objects'
       ! Destroy all PETSc objects and the petsc_numbering:
       call petsc_solve_destroy(y, A, b, ksp, petsc_numbering, solver_option_path)
-      
-      ewrite(2,*) 'Leaving PETSc_solve_full_projection'
       
     end subroutine petsc_solve_full_projection
 

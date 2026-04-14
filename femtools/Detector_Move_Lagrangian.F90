@@ -179,10 +179,6 @@ contains
     logical :: any_lagrangian
     real :: rk_dt
 
-    ewrite(1,*) "In move_lagrangian_detectors"
-    ewrite(2,*) "Detector list", detector_list%id, "has", detector_list%length, &
-         "local and", detector_list%total_num_det, "global detectors"
-
     parameters => detector_list%move_parameters
 
     ! Pull some information from state

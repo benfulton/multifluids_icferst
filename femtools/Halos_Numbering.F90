@@ -107,8 +107,6 @@ contains
     logical, dimension(:), allocatable :: local_nodes
     integer tag
 
-    ewrite(1,*) "Creating universal numbering for a general order halo"
-
     nprocs = halo_proc_count(halo)
     communicator = halo_communicator(halo)
     rank = getrank(communicator)
@@ -248,7 +246,6 @@ contains
     type(integer_vector), dimension(:), allocatable :: receives_unn, sends_unn
     integer tag
 
-    ewrite(1,*) "Creating universal numbering for a trailing receives halo"
     assert(trailing_receives_consistent(halo))
     assert(halo_valid_for_communication(halo))
 
@@ -275,9 +272,9 @@ contains
     halo%owned_nodes_unn_base(nprocs+1)=universal_numbering_count(halo)
     assert( halo%owned_nodes_unn_base(nprocs)<=halo%owned_nodes_unn_base(nprocs+1) )
     
-    ewrite(2, "(a,i0)") "Owned nodes universal node number base = ", &
-      & halo%my_owned_nodes_unn_base
-    ewrite(2, "(a,i0)") "Total receive_nodes = ", halo_all_receives_count(halo)
+    !ewrite(2, "(a,i0)") "Owned nodes universal node number base = ", &
+    !  & halo%my_owned_nodes_unn_base
+    !ewrite(2, "(a,i0)") "Total receive_nodes = ", halo_all_receives_count(halo)
     allocate(halo%receives_gnn_to_unn(halo_all_receives_count(halo)))
     
     if(present_and_true(local_only)) then

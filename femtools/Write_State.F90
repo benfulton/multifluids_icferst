@@ -197,8 +197,7 @@ contains
     character(len = OPTION_PATH_LEN) :: dump_filename, dump_format
     integer :: max_dump_no, stat
 
-    ewrite(1, *) "In write_state"
-    call profiler_tic("I/O")
+   call profiler_tic("I/O")
 
     call get_option("/simulation_name", dump_filename)
     call get_option("/io/max_dump_file_count", max_dump_no, stat, default = huge(0))
@@ -218,7 +217,6 @@ contains
     call update_dump_times
 
     call profiler_toc("I/O")
-    ewrite(1, *) "Exiting write_state"
 
   end subroutine write_state
 
@@ -232,8 +230,7 @@ contains
     integer :: max_dump_no, stat
     real, intent(in) :: acctim
     character(len = 14) :: acctim_str
-    ewrite(1, *) "In write_state_mindt"
-    call profiler_tic("I/O")
+     call profiler_tic("I/O")
 
     call get_option("/simulation_name", dump_filename)
     call get_option("/io/max_dump_file_count", max_dump_no, stat, default = huge(0))
@@ -251,7 +248,6 @@ contains
     end select
 
     call profiler_toc("I/O")
-    ewrite(1, *) "Exiting write_state_mindt"
 
   end subroutine write_state_mindt
 

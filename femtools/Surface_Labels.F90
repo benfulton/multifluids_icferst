@@ -291,8 +291,6 @@ contains
     integer current_id, sngi, stotel
     integer j, k, sele, sele2, pos, ele
 
-    ewrite(1,*) "Inside get_coplanar_ids"
-
     if (.not. has_faces(mesh)) then
        call add_faces(mesh)
     end if
@@ -384,8 +382,6 @@ contains
        pos = pos + 1
     end do
     deallocate(normals)
-
-    ewrite(2,*) "Before merge_surface_ids, n/o local coplanes:", current_id-1
 
     call merge_surface_ids(mesh, coplanar_ids, max_id = current_id - 1)
 

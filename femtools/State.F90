@@ -2597,6 +2597,7 @@ contains
     integer, intent(in), optional :: unit
     integer :: i, lunit
 
+    return
     if (present(unit)) then
        lunit=unit
     else
@@ -3030,8 +3031,6 @@ contains
     type(scalar_field), pointer :: s_field => null()
     type(tensor_field), pointer :: t_field => null()
     type(vector_field), pointer :: v_field => null()
-
-    ewrite(2, *) "Updating halos for state " // trim(state%name)
 
     do i = 1, scalar_field_count(state)
       s_field => extract_scalar_field(state, i)

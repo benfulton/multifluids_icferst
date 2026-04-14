@@ -1195,14 +1195,10 @@ contains
     !Initialise fail-safe
     FS_succeded = .false. !This is so when adapting many times only use it until a new mesh is obtained not anymore
     do while (.not. finished_adapting)
-      if(max_adapt_iteration > 1) then
-        ewrite(2, "(a,i0)") "Performing adapt ", i
-      end if
 
       ! Select mesh to adapt. Has to be linear and continuous.
       ! For vertically_structured_adaptivity, this is the horizontal mesh!
       call find_mesh_to_adapt(states(1), old_linear_mesh)
-      ewrite(2, *) "External mesh to be adapted: " // trim(old_linear_mesh%name)
       if (mesh_periodic(old_linear_mesh)) then
         old_positions = extract_vector_field(states(1), trim(old_linear_mesh%name) // "Coordinate")
         call incref(old_positions)
@@ -1210,7 +1206,6 @@ contains
         ! Extract the mesh field to be adapted (takes a reference)
         old_positions = get_coordinate_field(states(1), old_linear_mesh)
       end if
-      ewrite(2, *) "Mesh field to be adapted: " // trim(old_positions%name)
 
       call prepare_vertically_structured_adaptivity(states, metric, full_metric, &
                                                     old_positions, extruded_positions)
@@ -1454,17 +1449,6 @@ contains
         end if
       end if
 
-      if (show_reference_warnings) then
-         if(vertical_only) then
-            ewrite(2,*) "Using vertical_only adaptivity, so skipping the printing of references"
-         else if (no_reserved_meshes()) then
-            ewrite(2, *) "Tagged references remaining:"
-            call print_tagged_references(0)
-         else
-            ewrite(2, *) "There are reserved meshes, so skipping printing of references."
-         end if
-      end if
-
       call write_adapt_state_debug_output(states, final_adapt_iteration, &
         & initialise_fields = initialise_fields)
 
@@ -1473,7 +1457,6 @@ contains
 
       ! if this was the final adapt iteration we've now finished adapting
       if (final_adapt_iteration) then
-         ewrite(2,*) "Finished adapting."
          finished_adapting = .true.
       else
          ! check whether the next iteration should be the last iteration
@@ -1488,11 +1471,6 @@ contains
             end if
 
             if (zoltan_additional_adapt_iterations .gt. 0) then
-               if (global_min_quality .le. quality_tolerance) then
-                  ewrite(-1,*) "Mesh contains elements with quality below element quality tolerance. May need to increase number of adapt iterations to ensure good quality mesh."
-                  ewrite(-1,*) "min_quality = ", global_min_quality
-                  ewrite(-1,*) "quality_tolerance = ", quality_tolerance
-               end if
             end if
 
             final_adapt_iteration = .true.
@@ -1500,7 +1478,6 @@ contains
             ! Only check to allow an early exit if additional adapt iterations have been switched on
             if (zoltan_additional_adapt_iterations .gt. 0) then
                if((global_min_quality .gt. quality_tolerance) .and. (i .ge. zoltan_min_adapt_iterations)) then
-                  ewrite(2,*) "The next iteration will be final adapt iteration as the mesh is of high enough quality and we have done the minimum number of adapt iterations."
                   final_adapt_iteration = .true.
                end if
             end if

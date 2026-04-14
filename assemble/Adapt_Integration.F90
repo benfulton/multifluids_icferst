@@ -289,8 +289,6 @@ contains
     assert(metric%mesh == input_positions%mesh)
 #endif
 
-    ewrite(2, *) "Forming adaptmem arguments"
-
     nnod = node_count(input_positions)  ! Number of nodes
     nelm = element_count(input_positions)  ! Number of volume elements
     szenls = nloc * nelm  ! Size of the volume element list
@@ -313,18 +311,12 @@ contains
 #else
     FLExit("Fluidity compiled without libadaptivity support")
 #endif
-    ewrite(1, *) "Exited adaptmem"
-
-    ewrite(2, "(a,i0)") "Integer working memory size: ", intsiz
-    ewrite(2, "(a,i0)") "Real working memory size: ", rlsiz
     if(intsiz < 0) then
       FLAbort("Invalid integer working memory size")
     end if
     if(rlsiz < 0) then
       FLAbort("Invalid real working memory size")
     end if
-
-    ewrite(2, *) "Forming remaining adptvy arguments"
 
     ! Working memory
     allocate(intarr(intsiz))  ! Integer working memory

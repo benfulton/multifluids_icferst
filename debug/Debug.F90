@@ -54,6 +54,25 @@ contains
     
   end function debug_unit
 
+  function debug_unit_with_timestamp(priority)
+    !!< Emit a timestamp prefix and return the output unit used by ewrite.
+
+    integer :: debug_unit_with_timestamp
+    integer, intent(in) :: priority
+    character(len=8) :: date
+    character(len=10) :: time
+    character(len=32) :: timestamp
+
+    debug_unit_with_timestamp = debug_unit(priority)
+
+    call date_and_time(date=date, time=time)
+    write(timestamp, '(A4,"-",A2,"-",A2,1X,A2,":",A2,":",A2)') &
+      date(1:4), date(5:6), date(7:8), time(1:2), time(3:4), time(5:6)
+
+    write(debug_unit_with_timestamp, '(A)', advance='no') '['//trim(timestamp)//'] '
+
+  end function debug_unit_with_timestamp
+
   function debug_level()
     ! Simply return the current debug level. This makes the debug level
     ! effectively global.

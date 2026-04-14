@@ -789,11 +789,7 @@ subroutine project_tensor_field(from_field, to_field, X)
 
     integer, allocatable, dimension(:) :: sndglno, boundary_ids, element_owner
 
-    ewrite(1,*) "Entering create_subdomain_mesh"
-
     ! Build element mapping functions to and from sub mesh:
-
-    ewrite(1,*) 'Number of elements in submesh:', size(element_list)
 
     ! Derive node list for subdomain_mesh:
     call allocate(submesh_node_set)
@@ -804,7 +800,6 @@ subroutine project_tensor_field(from_field, to_field, X)
 
     allocate(node_list(key_count(submesh_node_set))) ! Nodal map from sub mesh --> full mesh
     node_list = set2vector(submesh_node_set)
-    ewrite(1,*) 'Number of nodes in submesh:', size(node_list)
 
     allocate(inverse_node_list(node_count(mesh))) ! Nodal map from full mesh --> sub mesh
     ! if after it is set up, the value in inverse_subnode_list = 0, this means that that element of 
@@ -867,7 +862,6 @@ subroutine project_tensor_field(from_field, to_field, X)
       boundary_ids(i) = surface_element_id(mesh, face)
     end do
 
-    ewrite(2,*) "Number of surface elements: ", edge_count
     ! Add faces to submesh:
     if (has_discontinuous_internal_boundaries(mesh)) then
       allocate(element_owner(1:edge_count))
@@ -897,8 +891,6 @@ subroutine project_tensor_field(from_field, to_field, X)
     deallocate(inverse_node_list)
     call deallocate(submesh_node_set)
 
-    ewrite(1,*) "Leaving create_subdomain_mesh"
-
   end subroutine create_subdomain_mesh
 
   subroutine generate_subdomain_halos(external_mesh,subdomain_mesh,node_list,inverse_node_list)
@@ -908,8 +900,6 @@ subroutine project_tensor_field(from_field, to_field, X)
     integer, dimension(:) :: node_list, inverse_node_list 
 
     integer :: nhalos, communicator, nprocs, procno, ihalo, inode, iproc, nowned_nodes
-
-    ewrite(1, *) "In generate_subdomain_halos"
 
     assert(continuity(subdomain_mesh) == 0)
     assert(.not. associated(subdomain_mesh%halos))

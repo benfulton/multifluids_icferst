@@ -58,8 +58,6 @@ module bounding_box_metric
     logical :: debug_metric
     real, dimension(positions%dim, positions%dim) :: max_metric_nodes
 
-    ewrite(2,*) "++: Constraining metric to bounding box"
-
     debug_metric = have_option("/mesh_adaptivity/hr_adaptivity/debug/write_metric_stages")
 
     do i = 1, positions%dim

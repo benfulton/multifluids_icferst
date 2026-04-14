@@ -157,8 +157,6 @@ module interpolation_metric
       call allocate(aspect_ratios, positions%mesh, "Metric aspect ratio")
     endif
 
-    ewrite(2,*) "++: Forming interpolation metric"
-
     call halo_update(fields_list(1))
     call compute_hessian(fields_list(1), positions, error_metric)
     
@@ -167,8 +165,6 @@ module interpolation_metric
       call vertically_align_metric(state(1), error_metric)
     end if
 
-    ewrite(2,*) "++: Hessian", 1, "formed"
-
     if (debug_metric) then
       call get_edge_lengths(error_metric, edgelen)
       call vtk_write_fields(trim("interpolation_metric_hessian_1"), adaptcnt, positions, positions%mesh, &
@@ -176,7 +172,6 @@ module interpolation_metric
     endif
 
     call form_metric(error_metric, fields_list(1), weights_list(1), state(1))
-    ewrite(2,*) "++: Metric", 1, "formed"
 
     if (debug_metric) then
       call get_edge_lengths(error_metric, edgelen)
@@ -190,7 +185,6 @@ module interpolation_metric
       write(buf, '(i0)') i
       call halo_update(fields_list(i))
       call compute_hessian(fields_list(i), positions, tmp_tensor)
-      ewrite(2,*) "++: Hessian", i, "formed"
 
       if (align_metric_vertically) then
         ! state only used for "GravityDirection", so state(1) is fine
@@ -204,7 +198,6 @@ module interpolation_metric
       endif
 
       call form_metric(tmp_tensor, fields_list(i), weights_list(i), state(1))
-      ewrite(2,*) "++: Metric", i, "formed"
 
       if (debug_metric) then
         call get_edge_lengths(tmp_tensor, edgelen)
@@ -214,7 +207,6 @@ module interpolation_metric
       endif
 
       call merge_tensor_fields(error_metric, tmp_tensor)
-      ewrite(2,*) "++: Metric", i, "merged"
 
       if (debug_metric) then
         call get_edge_lengths(error_metric, edgelen)

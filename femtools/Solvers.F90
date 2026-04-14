@@ -956,7 +956,6 @@ type(vector_field), intent(in), optional :: positions
     pmat=A
   end if
 
-  ewrite(2, *) 'Using solver options defined at: ', trim(solver_option_path)
   call attach_null_space_from_options(A, solver_option_path, pmat=pmat, &
     positions=positions, petsc_numbering=petsc_numbering)
 
@@ -1006,7 +1005,6 @@ type(vector_field), intent(in), optional :: positions
 
   if (timing) then
     call cpu_time(time2)
-    ewrite(2,*) trim(name)// " CPU time spent in PETSc setup: ", time2-time1
   end if
 
   if(present(sfield)) then
@@ -1114,7 +1112,6 @@ Mat, intent(in), optional:: rotation_matrix
   else
     parallel= .false.
   end if
-  ewrite(2, *) 'Using solver options defined at: ', trim(solver_option_path)
 
   if (matrix%ksp==PETSC_NULL_KSP) then
 
@@ -1135,7 +1132,6 @@ Mat, intent(in), optional:: rotation_matrix
 
   if (timing) then
     call cpu_time(time2)
-    ewrite(2,*) trim(name)// " CPU time spent in PETSc setup: ", time2-time1
   end if
 
   if(present(sfield)) then
@@ -1231,21 +1227,14 @@ type(petsc_numbering_type), intent(in):: petsc_numbering
 logical, intent(in):: startfromzero
 
   call profiler_tic(x, "field2petsc")
-  ewrite(1, *) 'Assembling RHS.'
 
   ! create PETSc vec for rhs using above numbering:
   call field2petsc(rhs, petsc_numbering, b)
 
-  ewrite(1, *) 'RHS assembly completed.'
-
   if (.not. startfromzero) then
-
-    ewrite(1, *) 'Assembling initial guess.'
 
     ! create PETSc vec for initial guess and result using above numbering:
     call field2petsc(x, petsc_numbering, y)
-
-    ewrite(1, *) 'Initial guess assembly completed.'
 
   end if
   call profiler_toc(x, "field2petsc")
@@ -1337,8 +1326,6 @@ logical, optional, intent(in):: nomatrixdump
     call PetscGetFlops(flops1, ierr)
   end if
 
-  ewrite(1, *) 'Entering solver.'
-
   ! if a null space is defined for the petsc matrix, make sure it's projected out of the rhs
   call KSPGetOperators(ksp, mat, pmat, ierr)
   call MatGetNullSpace(mat, nullsp, ierr)
@@ -1350,16 +1337,6 @@ logical, optional, intent(in):: nomatrixdump
   call KSPSolve(ksp, b, y, ierr)
   call KSPGetConvergedReason(ksp, reason, ierr)
   call KSPGetIterationNumber(ksp, iterations, ierr)
-
-  ewrite(1, *) 'Out of solver.'
-
-  if (timing) then
-    call cpu_time(time2)
-    call PetscGetFlops(flops2, ierr)
-    ewrite(2,*) trim(name)// ' CPU time spent in solver: ',time2-time1
-    ewrite(2,*) trim(name)// ' MFlops counted by Petsc: ',(flops2-flops1)/1e6
-    ewrite(2,*) trim(name)// ' MFlops/sec: ',(flops2-flops1)/((time2-time1)*1e6)
-  end if
 
   if(have_option(trim(solver_option_path)//'/diagnostics/dump_matrix')) then
     if(present_and_true(nomatrixdump)) then
@@ -1380,9 +1357,6 @@ logical, optional, intent(in):: nomatrixdump
   !      startfromzero, A, b, petsc_numbering, &
   !      x0=x0, vector_x0=vector_x0, &
   !      checkconvergence=checkconvergence,nomatrixdump=nomatrixdump)
-
-  ewrite(2, "(A, ' PETSc reason of convergence: ', I0)") trim(name), reason
-  ewrite(2, "(A, ' PETSc n/o iterations: ', I0)") trim(name), iterations
 
   if (print_norms) then
      call VecNorm(y, NORM_2, norm, ierr)
@@ -1744,8 +1718,6 @@ subroutine create_ksp_from_options(ksp, mat, pmat, solver_option_path, parallel,
     MatFactorShiftType shifttype
     logical startfromzero, remove_null_space
 
-    ewrite(1,*) "Inside setup_ksp_from_options"
-
     ! first set pc options
     ! =========================================================
     call KSPGetPC(ksp, pc, ierr)
@@ -1768,7 +1740,6 @@ subroutine create_ksp_from_options(ksp, mat, pmat, solver_option_path, parallel,
     call KSPSetFromOptions(ksp, ierr)
     ! set ksptype again to force the flml choice
     call KSPSetType(ksp, ksptype, ierr)
-    ewrite(2, *) 'ksp_type:', trim(ksptype)
 
 
     if(trim(ksptype) == 'cg') then
@@ -1785,7 +1756,6 @@ subroutine create_ksp_from_options(ksp, mat, pmat, solver_option_path, parallel,
             '/iterative_method::gmres/restart', lrestart, default=-1)
        if (lrestart >= 0) then
           call KSPGMRESSetRestart(ksp, lrestart, ierr)
-          ewrite(2, *) 'restart:', lrestart
        end if
     end if
 
@@ -1817,10 +1787,6 @@ subroutine create_ksp_from_options(ksp, mat, pmat, solver_option_path, parallel,
 
     ! Inquire about settings as they may have changed by PETSc options:
     call KSPGetTolerances(ksp, rtol, atol, dtol, max_its, ierr)
-
-    ewrite(2, *) 'ksp_max_it, ksp_atol, ksp_rtol, ksp_dtol: ', &
-      max_its, atol, rtol, dtol
-    ewrite(2, *) 'startfromzero:', startfromzero
 
     ! cancel all existing monitors (if reusing the same ksp)
     call KSPMonitorCancel(ksp, ierr)
@@ -2092,13 +2058,9 @@ subroutine create_ksp_from_options(ksp, mat, pmat, solver_option_path, parallel,
 
        ! set the options for the ksp of this complete solve
        call PCKSPGetKSP(pc, subksp, ierr)
-       ewrite(1,*) "Going into setup_ksp_from_options again to set the options "//&
-          &"for the complete ksp solve of the preconditioner"
        call KSPSetOperators(subksp, pmat, pmat, ierr)
        call setup_ksp_from_options(subksp, pmat, pmat, &
          trim(option_path)//'/solver', petsc_numbering=petsc_numbering)
-       ewrite(1,*) "Returned from setup_ksp_from_options for the preconditioner solve, "//&
-          &"now setting options for the outer solve"
 
     else if (pctype==PCASM .or. pctype==PCBJACOBI) then
 
@@ -2264,11 +2226,6 @@ subroutine create_ksp_from_options(ksp, mat, pmat, solver_option_path, parallel,
 
     end if
 
-    ewrite(2, *) 'pc_type: ', trim(pctype)
-    if (pctype=='hypre') then
-      ewrite(2,*) 'pc_hypre_type:', trim(hypretype)
-    end if
-
   end subroutine setup_pc_from_options
 
   recursive subroutine setup_fieldsplit_preconditioner(pc, option_path, &
@@ -2351,21 +2308,14 @@ subroutine create_ksp_from_options(ksp, mat, pmat, solver_option_path, parallel,
     PetscBool:: flag
     PetscErrorCode:: ierr
 
-    ewrite(2, *) 'Using solver options from cache:'
-
     call KSPGetType(ksp, ksptype, ierr)
-    ewrite(2, *) 'ksp_type: ', trim(ksptype)
 
     call KSPGetPC(ksp, pc, ierr)
     call PCGetType(pc, pctype, ierr)
-    ewrite(2, *) 'pc_type: ', trim(pctype)
 
     call KSPGetTolerances(ksp, rtol, atol, dtol, maxits, ierr)
-    ewrite(2, *) 'ksp_max_it, ksp_atol, ksp_rtol, ksp_dtol: ', &
-      maxits, atol, rtol, dtol
 
     call KSPGetInitialGuessNonzero(ksp, flag, ierr)
-    ewrite(2, *) 'startfromzero:', .not. flag
 
   end subroutine ewrite_ksp_options
 

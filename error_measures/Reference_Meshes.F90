@@ -33,15 +33,11 @@ contains
     type(mesh_type), pointer :: mesh => null()
     type(vector_field) :: reference_positions
 
-    ewrite(1, *) "In enforce_reference_meshes"
-
     nreference_meshes = option_count(base_name)
-    ewrite(2, *) "Number of reference meshes: ", nreference_meshes
     if(nreference_meshes == 0) return
     
     do i = 0, nreference_meshes - 1         
       call get_option(base_name // "[" // int2str(i) // "]" // "/mesh_name", mesh_name)
-      ewrite(2, *) "Enforcing reference mesh: " // trim(mesh_name) 
       assert(size(states) > 0)
       mesh => extract_mesh(states(1), mesh_name)
       reference_positions = get_coordinate_field(states(1), mesh)
@@ -52,15 +48,12 @@ contains
         assert(have_option(base_name // "[" // int2str(i) // "]" // "/maximum"))
       end if
 #endif
-      ewrite(2, *) "Reference mesh is a minimum?", minimum
-      
+     
       call enforce_reference_mesh(metric_positions, reference_positions, metric, minimum)
       
       call deallocate(reference_positions)
     end do
 
-    ewrite(1, *) "Exiting enforce_reference_meshes"
-  
   end subroutine enforce_reference_meshes
   
   subroutine enforce_reference_mesh(metric_positions, reference_positions, metric, minimum)

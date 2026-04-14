@@ -677,7 +677,6 @@ contains
     do i = 1, scalar_field_count(state)
       sfield => extract_scalar_field(state, i)      
       if (interpolate_field(sfield, first_time_step=first_time_step)) then
-        ewrite(2,*) 'selecting to interpolate ', trim(sfield%name)
         call insert(interpolate_state, sfield, sfield%name)
       end if
     end do
@@ -687,7 +686,6 @@ contains
     do i = 1, vector_field_count(state)
       vfield => extract_vector_field(state, i)
       if (interpolate_field(vfield, first_time_step=first_time_step)) then
-        ewrite(2,*) 'selecting to interpolate ', trim(vfield%name)
         call insert(interpolate_state, vfield, vfield%name)
       end if
     end do
@@ -697,7 +695,6 @@ contains
     do i = 1, tensor_field_count(state)
       tfield => extract_tensor_field(state, i)
       if (interpolate_field(tfield, first_time_step=first_time_step)) then
-        ewrite(2,*) 'selecting to interpolate ', trim(tfield%name)
         call insert(interpolate_state, tfield, tfield%name)
       end if
     end do

@@ -253,8 +253,6 @@ contains
     integer :: communicator, error_count, i, nhalos, procno, nparts, nprocs
     integer, dimension(:), allocatable :: nreceives, nsends, receives, sends
 
-    ewrite(1, *) "In write_halos"
-
     nhalos = halo_count(mesh)
     if(nhalos == 0) return
 
@@ -297,8 +295,6 @@ contains
     if(error_count > 0) then
       FLExit("Unable to write halos with name " // trim(filename))
     end if
-
-    ewrite(1, *) "Exiting write_halos"
 
   end subroutine write_halos
 

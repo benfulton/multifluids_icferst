@@ -991,7 +991,6 @@ contains
 
   iterator => default_stat%registered_diagnostic_first
 
-  ewrite(1, *) "Registered diagnostics:"
   do while(associated(iterator))
     if (iterator%have_material_phase) then
       ewrite(1, *) "Name: ", trim(iterator%name),           ", ", &
@@ -1841,7 +1840,6 @@ contains
     ! And finally some sanity checks
     totaldet_global=default_stat%detector_list%length
     call allsum(totaldet_global)
-    ewrite(2,*) "Found", default_stat%detector_list%length, "local and ", totaldet_global, "global detectors"
 
     assert(totaldet_global==default_stat%detector_list%total_num_det)
 
@@ -1919,7 +1917,6 @@ contains
     type(registered_diagnostic_item), pointer :: iterator => NULL()
     logical :: l_move_detectors
 
-    ewrite(1,*) 'In write_diagnostics'
     call profiler_tic("I/O")
 
     if(present_and_true(not_to_move_det_yet)) then
@@ -2588,9 +2585,7 @@ contains
     type(vector_field), pointer :: vfield
     type(detector_type), pointer :: detector
 
-    ewrite(1,*) "In write_detectors"
-
-    !Computing the global number of detectors. This is to prevent hanging
+     !Computing the global number of detectors. This is to prevent hanging
     !when there are no detectors on any processor
     check_no_det=1
     if (detector_list%length==0) then
@@ -2687,15 +2682,12 @@ contains
 
     totaldet_global=detector_list%length
     call allsum(totaldet_global)
-    ewrite(2,*) "Found", detector_list%length, "local and", totaldet_global, "global detectors"
 
     if (totaldet_global/=detector_list%total_num_det) then
        ewrite(2,*) "We have either duplication or have lost some det"
        ewrite(2,*) "totaldet_global", totaldet_global
        ewrite(2,*) "total_num_det", detector_list%total_num_det
     end if
-
-    ewrite(1,*) "Exiting write_detectors"
 
   contains
 
@@ -2727,15 +2719,9 @@ contains
     type(vector_field), pointer :: vfield
     type(detector_type), pointer :: node
 
-    ewrite(2, *) "In write_mpi_out"
-
     detector_list%mpi_write_count = detector_list%mpi_write_count + 1
-    ewrite(2, *) "Writing detector output ", detector_list%mpi_write_count
 
     procno = getprocno()
-
-    ewrite(2, *) "Number of detector scalar fields = ", detector_list%num_sfields
-    ewrite(2, *) "Number of detector vector fields = ", detector_list%num_vfields
 
     call mpi_type_extent(getpreal(), realsize, ierror)
     assert(ierror == MPI_SUCCESS)
@@ -2873,8 +2859,6 @@ contains
 !
 !    deallocate(buffer)
 !    ewrite(2, "(a,i0,a)") "Read ", count, " reals"
-
-    ewrite(2, *) "Exiting write_mpi_out"
 
 end subroutine write_mpi_out
 
@@ -3032,8 +3016,7 @@ end subroutine write_mpi_out
     call get_option("/timestepping/finish_time", ltime)
 
     ewrite(1,*)'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
-    ewrite(1,*)'% Some quantities associated with the initial set-up of this problem. %'
-    ewrite(1,*)'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+    ewrite(1,*)'% RUN_DIAGNOSTICS %'
     ewrite(1,*)'-'
     ewrite(1,*)'The time step (DT) is:                                 ',DT
     ewrite(1,*)'The end time (LTIME) is set to:                        ',LTIME
@@ -3076,11 +3059,13 @@ end subroutine write_mpi_out
     !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     !                    Fields you've given
     !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ewrite(1,*)'The following material phases and their ', &
-      'contents are in existence'
-    do i = 1, size(state)
-       call print_state(state(i), unit=debug_unit(1))
-    end do
+    !ewrite(1,*)'The following material phases and their ', &
+    !  'contents are in existence'
+    !do i = 1, size(state)
+    !   call print_state(state(i), unit=debug_unit(1))
+    !end do
+
+    ewrite(1,*)'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 
   END SUBROUTINE RUN_DIAGNOSTICS
 

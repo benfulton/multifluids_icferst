@@ -70,22 +70,16 @@ module form_metric_field
     integer :: p, stat
 
     if (have_adapt_opt(trim(field%option_path), "/adaptivity_options/relative_measure")) then
-      ewrite(2,*) "Forming relative metric"
       call relative_metric(hessian, field, adweit)
-    else
-      ewrite(2,*) "Forming absolute metric"
             
       call get_p_norm(field, p, stat)
       if(stat == 0) then
-        ewrite(2, *) "Norm degree: ", p
         call absolute_metric(hessian, adweit, p)
       else
-        ewrite(2, *) "Norm degree: inf"
         call absolute_metric(hessian, adweit)
       end if
     end if
 
-    ewrite(2,*) "Bounding metric"
     call bound_metric(hessian, state)
   
   contains
