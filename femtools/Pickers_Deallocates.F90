@@ -71,7 +71,6 @@ contains
     call decref(picker)
     if(has_references(picker)) return
   
-    ewrite(2, *) "Deallocating picker with ID", picker%picker_id  
     call node_owner_finder_reset(picker%picker_id)
     call nullify(picker)
     

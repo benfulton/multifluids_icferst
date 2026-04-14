@@ -88,12 +88,6 @@ contains
       end if
     end if
 
-    if(do_checkpoint) then
-      ewrite(1, *) "do_checkpoint returning .true."
-    else
-      ewrite(1, *) "do_checkpoint returning .false."
-    end if
-
   end function do_checkpoint_simulation
 
   subroutine checkpoint_simulation(state, prefix, postfix, cp_no, protect_simulation_name, &

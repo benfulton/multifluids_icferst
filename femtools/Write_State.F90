@@ -274,8 +274,6 @@ contains
     integer :: i, f, counter
     logical :: multi_state
 
-    ewrite(1, *) "In vtk_write_state_new_options"
-
     call get_option("/io/output_mesh[0]/name", mesh_name)
     model_mesh => extract_mesh(state(1), mesh_name)
 
@@ -374,11 +372,6 @@ contains
       end if
     end do
 
-    ewrite(2, *) "Writing using mesh " // trim(mesh_name)
-    ewrite(2, "(a,i0,a)") "Writing ", size(lsfields), " scalar field(s)"
-    ewrite(2, "(a,i0,a)") "Writing ", size(lvfields), " vector field(s)"
-    ewrite(2, "(a,i0,a)") "Writing ", size(ltfields), " tensor field(s)"
-
     model_coordinate=>get_external_coordinate_field(state(1), model_mesh)
 
     call vtk_write_fields(filename, index, &
@@ -388,8 +381,6 @@ contains
          vfields=lvfields, &
          tfields=ltfields, &
          write_region_ids=write_region_ids)
-
-    ewrite(1, *) "Exiting vtk_write_state_new_options"
 
   end subroutine vtk_write_state_new_options
 

@@ -529,6 +529,7 @@ contains
 !-------------------------------------------------------------------------------
 ! To allow checkpointing at the 0 timestep - taken from later in the subroutine (find write_state_units)
              if (do_checkpoint_simulation(dump_no)) then
+                  ewrite(1, *) "Checkpointing simulation at time 0"
                   checkpoint_number=0
                   call checkpoint_simulation(state,cp_no=checkpoint_number,&
                                                protect_simulation_name=.true.,file_type='.mpml')
@@ -653,23 +654,16 @@ contains
                                 call Impose_connected_BCs(outfluxes, packed_state, Mdims, acctim )
                 !##########################End tunneled BCs############################################################
 
-
-
-                !#=================================================================================================================
-                !# Vinicius: Exit simulation if it do not reach convergence
-                !#=================================================================================================================
-                ! call get_option( "/numerical_methods/max_sat_its", max_sat_its, default = 9)
-                ! if (its == NonLinearIteration .and. SFPI_its >= max_sat_its) exit Loop_Time
-                !#=================================================================================================================
-                !# Vinicius-end: Exit simulation if it do not reach convergence
-                !#=================================================================================================================
-
               !for the diagnostic field, now it seems to be working fine...
                 ewrite(2,*) '  NEW NONLINEAR ITERATION', its
                 !if adapt_mesh_in_FPI, relax the convergence criteria, since we only want the approx position of the flow
-                if (adapt_mesh_in_FPI) call adapt_mesh_within_FPI(ExitNonLinearLoop, adapt_mesh_in_FPI, its, 1)
+                if (adapt_mesh_in_FPI) then
+                    ewrite(2,*) "  Adapting mesh within fpi, relaxing convergence criteria"
+                    call adapt_mesh_within_FPI(ExitNonLinearLoop, adapt_mesh_in_FPI, its, 1)
+                end if
 
                 !Store the field we want to compare with to check how are the computations going
+                ewrite(2,*) "  Calling Adaptive_NonLinear with its=", its, "itime=", itime, "old_acctim=", old_acctim
                 call Adaptive_NonLinear(Mdims, packed_state, reference_field, its,itime,&
                     Repeat_time_step, ExitNonLinearLoop,nonLinearAdaptTs, old_acctim, 2)
 
@@ -728,6 +722,7 @@ contains
                 !# Now solving the Momentum Equation ( = Force Balance Equation )
                 Conditional_ForceBalanceEquation: if ( solve_force_balance .and. EnterSolve ) then
                     !if (getprocno() == 1 .and. its==1) print*, "Time step is:", itime
+                    ewrite(2,*) '    SOLVING FORCE BALANCE EQUATION'
                     CALL FORCE_BAL_CTY_ASSEM_SOLVE( state, packed_state, &
                         Mdims, CV_GIdims, FE_GIdims, CV_funs, FE_funs, Mspars, ndgln, Mdisopt, &
                         Mmat,multi_absorp, upwnd, eles_with_pipe, pipes_aux, velocity_field, pressure_field, &
@@ -876,6 +871,7 @@ contains
                 end if
 
                 !Finally calculate if the time needs to be adapted or not
+                ewrite(2,*) "  Checking for non-linear convergence and if the time step needs to be adapted"
                 call Adaptive_NonLinear(Mdims, packed_state, reference_field, its,itime,&
                     Repeat_time_step, ExitNonLinearLoop,nonLinearAdaptTs, old_acctim, 3, calculate_mass_delta, &
                         adapt_mesh_in_FPI, Accum_Courant, Courant_tol, Courant_number(2), first_time_step)
@@ -891,9 +887,11 @@ contains
                             call adapt_mesh_within_FPI(ExitNonLinearLoop, adapt_mesh_in_FPI, its, 2)
                             Accum_Courant = 0.
                         else
+                            ewrite(2,*) "  Not adapting mesh within FPI, acumulated Courant number is ", Accum_Courant
                             exit Loop_NonLinearIteration
                         end if
                     else
+                        ewrite(2,*) "  Not adapting mesh within FPI, exiting non-linear loop"
                         exit Loop_NonLinearIteration
                     end if
                 end if
@@ -1007,7 +1005,7 @@ contains
             if (write_all_stats) call write_diagnostics( state, current_time, dt, itime , non_linear_iterations = FPI_eq_taken) ! Write stat file
 
             !Call to create the output vtu files, if required and also checkpoint
-            call log_pre_vtu_sanity("PRE-VTU-DUMP")
+            ewrite(2,*) "  Creating output files if required"
             call create_dump_vtu_and_checkpoints()
 
             call petsc_logging(3,stages,ierrr,default=.true.)
@@ -1026,6 +1024,7 @@ contains
 
             ! Call to adapt the mesh if required! If adapting within the FPI then the adaption is controlled elsewhere
             if(acctim >= t_adapt_threshold .and. .not. have_option( '/mesh_adaptivity/hr_adaptivity/adapt_mesh_within_FPI')) then
+              ewrite(2,*) "  Adapting mesh"
               call adapt_mesh_mp()
             end if
 
@@ -1410,6 +1409,7 @@ contains
                 ! dump based on the prescribed period of time steps
                 Conditional_Dump_TimeStep: if( ( mod( itime, dump_period_in_timesteps ) == 0 ) ) then
                     if (do_checkpoint_simulation(dump_no)) then
+                        ewrite(1, *) "Checkpointing simulation at time step ", itime, " checkpoint number ", checkpoint_number
                         call checkpoint_simulation(state,cp_no=checkpoint_number,&
                             protect_simulation_name=.true.,file_type='.mpml')
                         checkpoint_number=checkpoint_number+1
@@ -1429,6 +1429,7 @@ contains
                 Conditional_Dump_RealTime: if( (abs(current_time-mdims%init_time - dump_period*dump_no) < 1d-12 .or. current_time-mdims%init_time >= dump_period*dump_no)&
                     .and. current_time-mdims%init_time/=finish_time) then
                     if (do_checkpoint_simulation(dump_no)) then
+                        ewrite(1, *) "Checkpointing simulation at time step ", itime, " checkpoint number ", checkpoint_number
                         call checkpoint_simulation(state,cp_no=checkpoint_number,&
                             protect_simulation_name=.true.,file_type='.mpml')
                         checkpoint_number=checkpoint_number+1

@@ -167,6 +167,7 @@ contains
 
     real :: imbalance, max_time, min_time, time
 
+    return
     assert(id > 0)
     assert(id <= MAX_TIC_ID)
 

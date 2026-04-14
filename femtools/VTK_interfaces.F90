@@ -149,7 +149,6 @@ contains
       ! if there's only one mesh, use that:
       model_mesh => extract_mesh(state(1), 1)
     else
-      ewrite(-1,*) "In vtk_write_state:"
       FLExit("Don't know which mesh to use as model.")
     end if
 
@@ -266,6 +265,8 @@ contains
     integer, allocatable, dimension(:)::ghost_levels
     real, allocatable, dimension(:,:) :: tempval
     integer :: lstat
+    logical :: log_wells_temperature
+    integer :: nnan_vtk, ninf_vtk
 
     if (present(stat)) stat = 0
 
@@ -490,6 +491,7 @@ contains
     if (present(sfields)) then
        do i=1,size(sfields)
           if(mesh_dim(sfields(i))/=mesh_dim(l_model)) cycle
+         log_wells_temperature = (trim(sfields(i)%name) == "wells::Temperature")
 
           if (sfields(i)%mesh%shape%degree /= 0) then
 
@@ -519,7 +521,16 @@ contains
               end if
             end if
             ! we've just allowed remapping from a higher order to a lower order continuous field
-
+            if (log_wells_temperature) then
+              ewrite(1,*) "Writing wells::Temperature values (vtkwritesn): ", l_model%val
+            end if
+            nnan_vtk = count(l_model%val /= l_model%val)
+            ninf_vtk = count(abs(l_model%val) > 0.5 * huge(0.0))
+            if (nnan_vtk > 0 .or. ninf_vtk > 0) then
+              ewrite(0, *) "VTK write *** BAD DATA *** scalar " // trim(sfields(i)%name), &
+                " NaN=", nnan_vtk, " Inf=", ninf_vtk, &
+                " min=", minval(l_model%val), " max=", maxval(l_model%val)
+            end if
             call vtkwritesn(l_model%val, trim(sfields(i)%name))
 
           else
@@ -528,10 +539,16 @@ contains
               allocate(tempval(element_count(l_model),1))
 
               tempval = sfields(i)%val(1)
+              if (log_wells_temperature) then
+                ewrite(1,*) "Writing wells::Temperature values (vtkwritesc constant): ", tempval(:,1)
+              end if
               call vtkwritesc(tempval(:,1), trim(sfields(i)%name))
 
               deallocate(tempval)
             else
+              if (log_wells_temperature) then
+                ewrite(1,*) "Writing wells::Temperature values (vtkwritesc): ", sfields(i)%val
+              end if              
               call vtkwritesc(sfields(i)%val, trim(sfields(i)%name))
             end if
 
@@ -625,6 +642,12 @@ contains
             do k=vfields(i)%dim+1, 3
               v_field_buffer(:,k)=0.0
             end do
+            nnan_vtk = count(v_field_buffer /= v_field_buffer)
+            ninf_vtk = count(abs(v_field_buffer) > 0.5 * huge(0.0))
+            if (nnan_vtk > 0 .or. ninf_vtk > 0) then
+              ewrite(0, *) "VTK write *** BAD DATA *** vector " // trim(vfields(i)%name), &
+                " NaN=", nnan_vtk, " Inf=", ninf_vtk
+            end if
             call vtkwritevn(&
                 v_field_buffer(:,X_), v_field_buffer(:,Y_), &
                 v_field_buffer(:,Z_), &

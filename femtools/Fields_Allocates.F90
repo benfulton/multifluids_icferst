@@ -3196,13 +3196,11 @@ contains
 
     assert(associated(mesh%adj_lists))
     if(.not. associated(mesh%adj_lists%eelist)) then
-      ewrite(2, *) "Adding element-element list to mesh " // trim(mesh%name)
       allocate(eelist)
       mesh%adj_lists%eelist => eelist
       ! We need the nelist to generate the eelist, so extract it from the cache
       ! (generating if necessary)
       nelist => extract_nelist(mesh)
-      ewrite(1, *) "Using the new makeeelist"
       call makeeelist(eelist, mesh, nelist)
 #ifdef DDEBUG
     else
@@ -3308,7 +3306,6 @@ contains
 
     assert(associated(mesh%adj_lists))
     if(associated(mesh%adj_lists%nnlist)) then
-      ewrite(2, *) "Removing node-node list from mesh " // trim(mesh%name)
       call deallocate(mesh%adj_lists%nnlist)
       deallocate(mesh%adj_lists%nnlist)
       nullify(mesh%adj_lists%nnlist)
@@ -3323,7 +3320,6 @@ contains
 
     assert(associated(mesh%adj_lists))
     if(associated(mesh%adj_lists%nelist)) then
-      ewrite(2, *) "Removing node-element list from mesh " // trim(mesh%name)
       call deallocate(mesh%adj_lists%nelist)
       deallocate(mesh%adj_lists%nelist)
       nullify(mesh%adj_lists%nelist)
@@ -3338,7 +3334,6 @@ contains
 
     assert(associated(mesh%adj_lists))
     if(associated(mesh%adj_lists%eelist)) then
-      ewrite(2, *) "Removing element-element list from mesh " // trim(mesh%name)
       call deallocate(mesh%adj_lists%eelist)
       deallocate(mesh%adj_lists%eelist)
       nullify(mesh%adj_lists%eelist)
