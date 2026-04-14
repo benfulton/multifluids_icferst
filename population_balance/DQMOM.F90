@@ -1043,7 +1043,6 @@ contains
     character(len=OPTION_PATH_LEN) :: option_path 
     character(len=FIELD_NAME_LEN) :: type
     
-    ewrite(1, *) "In dqmom_calculate_moments"
     do i_pop = 1, option_count(trim(state%option_path)//'/population_balance')
        call get_pop_option_path(state, i_pop, option_path)
        N = option_count(trim(option_path)//'/abscissa/scalar_field')
@@ -1071,7 +1070,6 @@ contains
           call deallocate(work)
        end do
     end do
-    ewrite(1, *) "Exiting dqmom_calculate_moments"
   end subroutine dqmom_calculate_moments
 
   subroutine dqmom_calculate_statistics(state)
@@ -1085,7 +1083,6 @@ contains
     character(len=OPTION_PATH_LEN) :: option_path 
     character(len=FIELD_NAME_LEN) :: type
     
-    ewrite(1, *) "In dqmom_calculate_statistics"
     do i_pop = 1, option_count(trim(state%option_path)//'/population_balance')
        call get_pop_option_path(state, i_pop, option_path)
 
@@ -1155,8 +1152,6 @@ contains
 
        end if
     end do
-    ewrite(1, *) "Exiting dqmom_calculate_statistics"
-
 
   end subroutine dqmom_calculate_statistics
 

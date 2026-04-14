@@ -678,9 +678,6 @@ contains
     character(len=OPTION_PATH_LEN) phase_path, field_path
     integer p, f, nphases, nfields
 
-    ewrite(1,*) "In set_boundary_conditions"
-
-
     if (have_option('/ocean_forcing/bulk_formulae')) then
         call set_ocean_forcings_boundary_conditions(states(1))
     end if
@@ -1570,9 +1567,6 @@ contains
     call get_boundary_condition(distance_field, 1, &
       surface_element_list=surface_element_list, &
       surface_node_list=surface_node_list)
-
-    ewrite(2,*) "Number of surface nodes:", size(surface_node_list)
-    ewrite(2,*) "Number of surface elements:", size(surface_element_list)
 
     sngi = face_ngi(distance_field, 1)
 

@@ -2021,7 +2021,6 @@ contains
     if(present(parent_name)) then
        lfield_name=trim(parent_name)//trim(lfield_name)
     end if
-    ewrite(1,*) "In allocate_and_insert_scalar_field, field is: ", trim(lfield_name)
 
     ! Do we need backward compatibility?
     ! If we need backward compatibility, then no matter how the field
@@ -2041,11 +2040,6 @@ contains
 
     !is_constant=allocate_tensor_field_as_constant(path)
     is_constant=allocate_scalar_field_as_constant(path)
-
-    ewrite(1,*) "Is field prognostic? ", is_prognostic
-    ewrite(1,*) "Is field prescribed? ", is_prescribed
-    ewrite(1,*) "Is field constant? ", is_constant
-    ewrite(1,*) "Is field diagnostic? ", is_diagnostic
 
     if (is_prognostic) then
 
@@ -2092,8 +2086,6 @@ contains
        call zero(field)
     end if
 
-
-    ewrite(2,*) trim(lfield_name), " is on mesh ", trim(mesh%name)
 
     ! Set field%option_path
     field%option_path=trim(option_path)
@@ -2160,7 +2152,6 @@ contains
     if(present(parent_name)) then
        lfield_name=trim(parent_name)//trim(lfield_name)
     end if
-    ewrite(1,*) "In allocate_and_insert_vector_field, field is: ", trim(lfield_name)
 
     ! Do we need backward compatibility?
     ! If we need backward compatibility, then no matter how the field
@@ -2179,11 +2170,6 @@ contains
     is_diagnostic=have_option(trim(path)//"/diagnostic")
 
     is_constant=allocate_vector_field_as_constant(path)
-
-    ewrite(1,*) "Is field prognostic? ", is_prognostic
-    ewrite(1,*) "Is field prescribed? ", is_prescribed
-    ewrite(1,*) "Is field constant? ", is_constant
-    ewrite(1,*) "Is field diagnostic? ", is_diagnostic
 
     ! Get dimension of vector - currently the dimension of the problem
     call get_option("/geometry/dimension", dim)
@@ -2226,8 +2212,6 @@ contains
        call allocate(field, dim, mesh, trim(lfield_name))
        call zero(field)
     end if
-
-    ewrite(2,*) trim(lfield_name), " is on mesh ", trim(mesh%name)
 
     ! Set field%option_path
     field%option_path=trim(option_path)
@@ -2293,7 +2277,6 @@ contains
           field_name=trim(parent_name)//trim(field_name)
        end if
     end if
-    ewrite(1,*) "In allocate_and_insert_tensor_field, field is: ", trim(field_name)
 
     ! Do we need backward compatibility?
     ! If we need backward compatibility, then no matter how the field
@@ -2316,10 +2299,6 @@ contains
     is_prescribed=have_option(trim(path)//"/prescribed")
     is_diagnostic=have_option(trim(path)//"/diagnostic")
     is_constant=allocate_tensor_field_as_constant(path)
-
-    ewrite(1,*) "Is field prescribed? ", is_prescribed
-    ewrite(1,*) "Is field diagnostic? ", is_diagnostic
-    ewrite(1,*) "Is field constant? ", is_constant
 
     if(is_prescribed) then
 
@@ -2400,7 +2379,6 @@ contains
     character(len=FIELD_NAME_LEN) :: mesh_name
     integer i
 
-    ewrite(2,*) "    Inserting children of: ",trim(path)
     do i=0, option_count(trim(path)//"/scalar_field")-1
        child_path=trim(path)//"/scalar_field["//int2str(i)//"]"
        ! Reset path to have name instead of index
@@ -2500,8 +2478,6 @@ contains
     character(len=OPTION_PATH_LEN):: phase_path
     logical :: mesh_changed
     integer :: p, f, nphases, nsfields, nvfields, ntfields
-
-    ewrite(1,*) "In set_prescribed_field_values"
 
     mesh_changed = .not. present_and_true(initial_mesh)
 
@@ -3153,14 +3129,6 @@ contains
        call transform_facet_to_physical(positions, i, detwei_f=detwei)
        area(sid)=area(sid)+sum(detwei)
     end do
-
-    ewrite(2, *) 'Surface id,  n/o surface elements,       surface area'
-    do i=sidmin, sidmax
-       ewrite(2, "(i10,i23,es20.9)") i, no_elements(i), area(i)
-    end do
-
-    ewrite(2,*) 'Total number of surface elements:', surface_element_count(mesh)
-    ewrite(2,'(a,es20.9)') 'Total surface area:', sum(area)
 
   end subroutine surface_id_stats
 

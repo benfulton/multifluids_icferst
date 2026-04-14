@@ -510,8 +510,6 @@ contains
     type(state_type), intent(inout):: state
     type(scalar_field), intent(inout):: pressure
 
-    ewrite(1,*) "In calculate_diagnostic_pressure"
-
     if (have_option(trim(state%option_path)//'/equation_of_state/compressible')) then
       call compressible_eos(state, pressure=pressure)
     else

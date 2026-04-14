@@ -43,8 +43,6 @@ contains
     integer(zoltan_int), dimension(*) :: data ! not used
     integer(zoltan_int), intent(out) :: ierr
     
-    ewrite(1,*) "In zoltan_cb_owned_node_count"
-
     count = halo_nowned_nodes(zoltan_global_zz_halo)
     if (have_option("/mesh_adaptivity/hr_adaptivity/zoltan_options/zoltan_debug")) then
        ewrite(1,*) "zoltan_cb_owned_node_count found: ", count, " nodes"
@@ -63,8 +61,6 @@ contains
     
     integer :: count, i
     real(zoltan_float) :: max_obj_wgt, min_obj_wgt
-    
-    ewrite(1,*) "In zoltan_cb_get_owned_nodes"
     
     assert(num_gid_entries == 1)
     assert(num_lid_entries == 1)
@@ -127,8 +123,6 @@ contains
     integer :: node
     character (len = OPTION_PATH_LEN) :: filename
 
-    ewrite(1,*) "In zoltan_cb_get_num_edges"
-
     assert(num_gid_entries == 1)
     assert(num_lid_entries == 1)
 
@@ -180,9 +174,7 @@ contains
     integer :: total_num_edges, my_num_edges
     
     real :: value
-    
-    ewrite(1,*) "In zoltan_cb_get_edge_list"
-    
+       
     assert(num_gid_entries == 1)
     assert(num_lid_entries == 1)
     assert(wgt_dim == 1)
@@ -355,7 +347,6 @@ contains
     integer :: i, node
     character (len = OPTION_PATH_LEN) :: filename
 
-    ewrite(1,*) "In zoltan_cb_pack_node_sizes"
     do i=1,num_ids
       node = local_ids(i)
       sizes(i) = zoltan_global_zz_positions%dim * real_size + &
@@ -397,7 +388,6 @@ contains
 
     integer :: i, j, node, ratio, head
 
-    ewrite(1,*) "In zoltan_cb_pack_nodes"
     ratio = real_size / integer_size
     assert(int(float(real_size) / float(integer_size)) == ratio) ! that ratio really is an int
 
@@ -479,7 +469,6 @@ contains
     integer, dimension(:), pointer :: current_buf
     integer :: rank
     
-    ewrite(1,*) "In zoltan_cb_unpack_nodes"
     ! assert new linear mesh and positions not allocated
     assert(.not. associated(new_mesh%refcount))
     assert(.not. associated(zoltan_global_new_positions%refcount))
@@ -771,8 +760,6 @@ contains
     integer :: i, node
     character (len = OPTION_PATH_LEN) :: filename
 
-    ewrite(1,*) "In zoltan_cb_pack_halo_node_sizes"
-
     do i=1,num_ids
       node = fetch(zoltan_global_universal_to_old_local_numbering, global_ids(i))
       sizes(i) = zoltan_global_zz_positions%dim * real_size + &
@@ -813,7 +800,6 @@ contains
     integer :: i, j, node, ratio, head, new_owner, rank
     integer, dimension(:), pointer :: current_buf
     
-    ewrite(1,*) "In zoltan_cb_pack_halo_nodes"
     ratio = real_size / integer_size
     rank = getrank()
     
@@ -884,8 +870,6 @@ contains
     integer :: ratio
     integer :: new_local_number, new_owner, sz
     
-    ewrite(1,*) "In zoltan_cb_unpack_halo_nodes"
-    
     ratio = real_size/integer_size
     
     do i=1,num_ids
@@ -952,8 +936,6 @@ contains
     integer :: state_no, field_no, sz, i
     character (len = OPTION_PATH_LEN) :: filename
     
-    ewrite(1,*) "In zoltan_cb_pack_field_sizes"
-
     allocate(zoltan_global_to_pack_detectors_list(num_ids))
     
     ! if there are some detectors on this process
@@ -1028,8 +1010,6 @@ contains
     integer :: old_universal_element_number, old_local_element_number, dataSize
 
     type(detector_type), pointer :: detector => null(), detector_to_delete => null()    
-
-    ewrite(1,*) "In zoltan_cb_pack_fields"
 
     total_det_packed=0
     do i=1,num_ids
@@ -1175,8 +1155,6 @@ contains
     type(detector_type), pointer :: detector => null()
     type(element_type), pointer :: shape => null()
     
-    ewrite(1,*) "In zoltan_cb_unpack_fields"
-
     total_det_unpacked=0
     
     do i=1,num_ids

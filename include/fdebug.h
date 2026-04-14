@@ -37,7 +37,7 @@
 #error __LINE__ does not work
 #endif
 
-#define ewrite(priority, format) if (priority <= current_debug_level) write(debug_unit(priority), format) 
+#define ewrite(priority, format) if (priority <= current_debug_level) write(debug_unit_with_timestamp(priority), format) 
 #define EWRITE(priority, format) ewrite(priority, format)
 
 #ifdef __GNUC__
