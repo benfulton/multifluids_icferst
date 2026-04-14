@@ -1533,7 +1533,6 @@ contains
     send_request = MPI_REQUEST_NULL
 
     ! loop over all new send nodes and send its adjacent elements
-    ewrite(1,*) "  Sending adjacent elements to new nodes"
     nelist => extract_nelist(mesh)
     do proc=1, nprocs
       if (halo_send_count(new_halo, proc)==0) cycle
@@ -2053,8 +2052,6 @@ contains
     call deallocate(uid_to_gid)
     deallocate(new_halo_recv_count)
     deallocate(new_halo_send_count)
-
-    ewrite(1,*) "Exiting expand_halo"
 
   end function expand_halo
 

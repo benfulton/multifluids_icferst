@@ -307,9 +307,6 @@ contains
     do i = 0, static_dete-1
        temp_string=default_stat%detector_group_names(i+1)
 
-        ewrite(1,*) 'In update_detectors_options static det loop'
-        ewrite(1,*) temp_string
-
        call set_option_attribute("/io/detectors/static_detector::" // trim(temp_string) // "/from_checkpoint_file/file_name", trim(filename), stat)
 
         if(stat /= SPUD_NO_ERROR .and. stat /= SPUD_NEW_KEY_WARNING .and. stat /= SPUD_ATTR_SET_FAILED_WARNING) then
@@ -361,22 +358,10 @@ contains
     do i = 0, python_functions_or_files-1
         temp_string=default_stat%detector_group_names(i+1+static_dete+lagrangian_dete)
 
-        ewrite(1,*) 'In update_detectors_options'
-        ewrite(1,*) temp_string
-
-        ewrite(1,*) 'In update_detectors_options'
-        ewrite(1,*) temp_string
-
         call set_option("/io/detectors/detector_array::" // trim(temp_string) // "/number_of_detectors/", &
                 & default_stat%number_det_in_each_group(i+1+static_dete+lagrangian_dete), stat = stat)
 
-        ewrite(1,*) 'In update_detectors_options'
-        ewrite(1,*) default_stat%number_det_in_each_group(i+1+static_dete+lagrangian_dete)
-
         assert(any(stat == (/SPUD_NO_ERROR, SPUD_NEW_KEY_WARNING/)))
-
-        ewrite(1,*) 'In update_detectors_options'
-        ewrite(1,*) default_stat%number_det_in_each_group(i+1+static_dete+lagrangian_dete)
 
         if (type_detectors(i+1)=='LAGRANGIAN') then
              call add_option("/io/detectors/detector_array::" // trim(temp_string) // "/lagrangian", stat = stat)

@@ -1581,14 +1581,8 @@ c      goterr = .true.
 C
       CALL RATOPC( TOPBIG, MAXBIG, STR1 )
       CALL RATOPC( 3*NELEMS+NEDGES, TOPBIG, STR2 )
-      ewrite(1,'(A,A,A,A)')
-     :     '   BIGLST usage: ',STR1,
-     :     '   BIGLST efficiency: ',STR2
       CALL RATOPC( TOPNOD, MXNODS, STR1 )
       CALL RATOPC( NUMNDS, TOPNOD, STR2 )
-      ewrite(1,'(A,A,A,A)')
-     :     '   NODLST usage: ',STR1,
-     :     '   NODLST efficiency: ',STR2
 C
       IF( SPLTED .AND. .NOT. SPLED2 ) THEN
          ewrite(1,8)

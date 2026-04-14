@@ -695,22 +695,6 @@ c            FLCHK3 = 0
 C
          IF( .NOT. NOCNCT .OR. TOGTHR ) THEN
 C
-            IF( TOGTHR ) THEN
-               IF( NOCNCT ) THEN
-                  ewrite(1,'(A,I3,1PE13.5)')
-     :              '--- Starting node move adapt of sweep',I*2,
-     :              ANGLEFACT
-               ELSE
-                  ewrite(1,'(A,I3,1PE13.5)')
-     :              '--- Starting connect & move adapt of sweep',I*2,
-     :              ANGLEFACT
-               END IF
-            ELSE
-               ewrite(1,'(A,I3,1PE13.5)')
-     :              '--- Starting connectivity adapt of sweep',I*2,
-     :              ANGLEFACT
-            END IF
-C
 C - an adaptive sweep with no node movement (element division is also
 C - inactive at the moment)
 C
@@ -814,13 +798,6 @@ C
       CALL GETSIZ( INTARR(BIGLST), RLARR(NODLST),
      :             NWNNOD, NWNELM, NWSZEN, NWSZNN, NWNSEL, NWSZSN )
 C
-      ewrite(1,'(a)')
-     :     '--- ADPTVY: FINISHED ADAPTING MESH'
-      ewrite(1,'(a,2i8)')
-     :     'TOPNOD,TOPBIG:',TOPNOD,TOPBIG
-      ewrite(1,'(a,3i8)')
-     :     'NODS,ELEMS,SURFS:',NWNNOD,NWNELM,NWNSEL
-C
       NWNODX = NODLST + (TOPNOD+1)*SIZNOD
       NWNODY = NWNODX + NWNNOD
       NWNODZ = NWNODY + NWNNOD
@@ -844,8 +821,6 @@ C - OLDFLD has length TOTM*NNOD and NEWFLD should have length TOTM*NEWNND.
 C - INTFLD can be called as many times as necessary for appropriate fields.
 C
 
-      ewrite(1,'(a)')
-     :     '--- ADPTVY: Interpolating fields...'
 c      pause
       CALL INTFLD( INTARR(BIGLST), RLARR(NODLST),
      :             NODX, NODY, NODZ, OLDFLD,
@@ -905,9 +880,6 @@ C - material/region id in NWELRG for each element. The nodal positions
 C - for the adapted mesh is returned in NODX, NODY and NODZ, and the
 C - interpolated error metrics are returned in NEWMTX if SIZMTX is sent
 C - as 9*NWNNOD (otherwise SIZMTX should be sent as 1).
-C
-      ewrite(1,'(a)')
-     :     '--- ADPTVY: Forming new fixed mesh data...'
 C
       IF( NWSFID + NWNSEL .GE. INTSIZ ) THEN
 c         WRITE(0,'(a)')
@@ -1000,9 +972,6 @@ c
 C     Finalize AdaptProgress module
 c      call finalize(NWNNOD)
 
-      ewrite(1,'(a)')
-     :     '--- ADPTVY: Finished successfully'
-c
   999 IF( IERR .NE. 0 ) THEN
          write(0,'(a,i7)') '*** ADPTVY: FINISHED WITH ERROR',IERR
       END IF

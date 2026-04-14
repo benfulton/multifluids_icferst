@@ -935,8 +935,6 @@ type(vector_field), intent(in), optional :: positions
 
   end if
 
-  ewrite(1, *) 'Matrix assembly completed.'
-
   if (IsParallel()) then
     parallel= (associated(halo))
   else

@@ -521,9 +521,6 @@ contains
               end if
             end if
             ! we've just allowed remapping from a higher order to a lower order continuous field
-            if (log_wells_temperature) then
-              ewrite(1,*) "Writing wells::Temperature values (vtkwritesn): ", l_model%val
-            end if
             nnan_vtk = count(l_model%val /= l_model%val)
             ninf_vtk = count(abs(l_model%val) > 0.5 * huge(0.0))
             if (nnan_vtk > 0 .or. ninf_vtk > 0) then
@@ -539,16 +536,10 @@ contains
               allocate(tempval(element_count(l_model),1))
 
               tempval = sfields(i)%val(1)
-              if (log_wells_temperature) then
-                ewrite(1,*) "Writing wells::Temperature values (vtkwritesc constant): ", tempval(:,1)
-              end if
               call vtkwritesc(tempval(:,1), trim(sfields(i)%name))
 
               deallocate(tempval)
             else
-              if (log_wells_temperature) then
-                ewrite(1,*) "Writing wells::Temperature values (vtkwritesc): ", sfields(i)%val
-              end if              
               call vtkwritesc(sfields(i)%val, trim(sfields(i)%name))
             end if
 

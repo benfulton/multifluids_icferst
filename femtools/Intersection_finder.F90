@@ -383,8 +383,6 @@ contains
     end do
     call deallocate(lmap_AB)
 
-    ewrite(1, *) "Exiting advancing_front_intersection_finder"
-    
   end function advancing_front_intersection_finder
 #else
   function advancing_front_intersection_finder(positionsA, positionsB, seed) result(map_AB)
@@ -470,8 +468,6 @@ contains
     assert(key_count(processed_neighbour) == 0)
     call deallocate(processed_neighbour)
     call deallocate(seen_elements)
-
-    ewrite(1, *) "Exiting advancing_front_intersection_finder"
 
     contains
       function advance_front(posA, positionsB, clues, bboxes_B, eelist_B) result(map)

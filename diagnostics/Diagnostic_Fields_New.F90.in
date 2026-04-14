@@ -362,8 +362,6 @@ contains
       call deallocate(calculated_states(i))
     end do
     
-    ewrite(1, *) "Exiting calculate_diagnostic_variables"
-    
   end subroutine calculate_diagnostic_variables
   
   function recalculate_diagnostic_variable_scalar(s_field, exclude_nonrecalculated) result(recalculate)

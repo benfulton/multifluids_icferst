@@ -628,8 +628,6 @@ module conservative_interpolation_module
       
     end do
 
-    ewrite(1, *) "Supermeshing complete"
-
     if (.not. present(map_BA)) then
       do ele_B=1,ele_count(new_position)
         call deallocate(lmap_BA(ele_B))

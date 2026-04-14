@@ -2615,8 +2615,6 @@ integer function get_tensor_boundary_condition_count(field)
     type(scalar_field_pointer), dimension(:), allocatable :: v_field_comps
     type(vector_field), pointer :: bcvalue, v_field
   
-    ewrite(1, *) "In derive_collapsed_bcs"
-  
     do i = 1, size(input_states)
       v_field_loop: do j = 1, vector_field_count(input_states(i))
         v_field => extract_vector_field(input_states(i), j)
