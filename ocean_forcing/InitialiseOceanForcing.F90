@@ -107,7 +107,6 @@ contains
        call NEMO_v2_AddFieldOfInterest("ssh")           !   4   | Sea surface height
     end if
 
-    ewrite(1, *) "Exiting initialise_ocean_forcing_readers"
   end subroutine initialise_ocean_forcing_readers
 
 end module initialise_ocean_forcing_module

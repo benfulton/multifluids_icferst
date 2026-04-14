@@ -702,7 +702,6 @@ subroutine keps_eddyvisc(state, advdif)
         ewrite(1,*) "Continuity of viscosity is the same as the continuity of bg_visc"
         call set(viscosity, bg_visc)
      end if
-     ewrite(1,*) "Exiting initialise viscosity to bg visc"
   end if
   
   ! Compute the length scale diagnostic field here.

@@ -115,8 +115,6 @@ contains
 
     end do
 
-    ewrite(1, *) "Exiting enforce_discrete_properties"
-    
   end subroutine enforce_discrete_properties
 
   function interpolate_field_solenoidal(option_path, only_prescribed, exclude_interpolated, exclude_nonreprescribed) result(process)

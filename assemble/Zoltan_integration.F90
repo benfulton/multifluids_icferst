@@ -515,9 +515,7 @@ module zoltan_integration
           elements => row_m_ptr(zoltan_global_zz_nelist, node)
           minimum_quality = min(minimum_quality, maxval(node_val(zoltan_global_element_quality, elements)))
        end do
-       ewrite(1,*) "local minimum achievable quality = ", minimum_quality
        call allmin(minimum_quality)
-       ewrite(1,*) "global minimum achievable quality = ", minimum_quality
     end if
 
   end subroutine setup_quality_module_variables
@@ -1486,9 +1484,6 @@ module zoltan_integration
 
     call deallocate(zoltan_global_universal_element_number_to_region_id)
 
-    ! Bingo! Our mesh has an enlist.
-    ewrite(1,*) "Exiting reconstruct_enlist"
-
   end subroutine reconstruct_enlist
 
   subroutine reconstruct_senlist
@@ -1603,8 +1598,6 @@ module zoltan_integration
 
     call deinterleave_surface_ids(zoltan_global_new_positions%mesh, max_coplanar_id)
 
-    ! Bingo! Our mesh has an senlist.
-    ewrite(1,*) "Exiting reconstruct_senlist"
   end subroutine reconstruct_senlist
 
   subroutine reconstruct_halo(zz)
@@ -1755,8 +1748,6 @@ module zoltan_integration
 
     call reorder_element_numbering(zoltan_global_new_positions)
 
-    ewrite(1,*) "Exiting reconstruct_halo"
-
   end subroutine reconstruct_halo
 
   subroutine initialise_transfer(zz, states, zoltan_global_new_positions_m1d, metric, full_metric, new_metric, initialise_fields, ignore_extrusion)
@@ -1775,8 +1766,6 @@ module zoltan_integration
     character(len=FIELD_NAME_LEN), dimension(:), allocatable :: mesh_names
     type(mesh_type), pointer :: mesh
     integer :: no_meshes
-
-    ewrite(1,*) 'in initialise_transfer'
 
     ! Set up zoltan_global_source_states
     do i=1,size(states)
@@ -1891,8 +1880,6 @@ module zoltan_integration
     real, allocatable :: send_buff(:,:), recv_buff(:,:)
     logical do_broadcast
     type(element_type), pointer :: shape
-
-    ewrite(1,*) "In update_detector_list_element"
 
     send_count=0
 
@@ -2039,8 +2026,6 @@ module zoltan_integration
 
     type(detector_list_ptr), dimension(:), pointer :: detector_list_array => null()
     type(detector_type), pointer :: detector => null(), add_detector => null()
-
-    ewrite(1,*) 'in transfer_fields'
 
     do i=1,size(sends)
        call allocate(sends(i))

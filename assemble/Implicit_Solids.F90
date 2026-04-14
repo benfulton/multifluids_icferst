@@ -2198,8 +2198,6 @@ contains
 
       end do
 
-      ewrite(1, *) "Supermeshing complete"
-
     do mesh = 1, mesh_count
       if(field_counts(mesh)>0) then
         if(.not.dg(mesh)) then
