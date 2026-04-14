@@ -2680,8 +2680,6 @@ integer function get_tensor_boundary_condition_count(field)
       end do v_field_loop
     end do
     
-    ewrite(1, *) "Exiting derive_collapsed_bcs"
-  
   end subroutine derive_collapsed_bcs
   
 end module boundary_conditions

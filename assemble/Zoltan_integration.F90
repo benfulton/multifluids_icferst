@@ -1043,8 +1043,6 @@ module zoltan_integration
        zoltan_global_universal_columns = halo_universal_numbers(zoltan_global_zz_halo, full_mesh%columns)
     end if
 
-    ewrite(1,*) 'exiting derive_full_export_lists'
-
   end subroutine derive_full_export_lists
 
   subroutine reset_zoltan_lists_full(zz, &

@@ -4024,8 +4024,6 @@ module fields_manipulation
 
     output_positions%option_path = input_positions%option_path
 
-    ewrite(1, *) "Exiting renumber_positions_elements"
-
   end subroutine renumber_positions_elements
 
   subroutine renumber_positions_elements_trailing_receives(positions, permutation)
@@ -4080,8 +4078,6 @@ module fields_manipulation
       assert(trailing_receives_consistent(positions%mesh%element_halos(i)))
     end do
 #endif
-
-    ewrite(1, *) "Exiting renumber_positions_elements_trailing_receives"
 
   end subroutine renumber_positions_elements_trailing_receives
   

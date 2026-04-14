@@ -63,7 +63,6 @@ module metric_assemble
     logical :: debug_metric, vertically_structured_adaptivity, split_gradation
     type(tensor_field), pointer :: max_tensor
 
-    ewrite(2,*) "+: Assembling metric"
     debug_metric = have_option("/mesh_adaptivity/hr_adaptivity/debug/write_metric_stages")
     ! is this metric going to be collapsed in the vertical to do horizontal adaptivity with it?
     vertically_structured_adaptivity = have_option("/mesh_adaptivity/hr_adaptivity/vertically_structured_adaptivity")

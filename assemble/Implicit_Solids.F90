@@ -1595,8 +1595,6 @@ contains
     type(vector_field), pointer :: old_position, new_position
     integer :: i
 
-    ewrite(1, *) "In interpolation_galerkin_multiple_states_femdem"
-
     call collapse_fields_in_state(old_states, old_fields_state)
     call collapse_fields_in_state(new_states, new_fields_state)
     call derive_collapsed_bcs(new_states, new_fields_state, bctype = "dirichlet")
@@ -1931,8 +1929,6 @@ contains
     integer :: ntests
     type(scalar_field), intent(inout), optional :: solid
 
-    ewrite(1, *) "In interpolation_galerkin_scalars"
-
     stat = 0
     if(present(force_bounded)) then
       l_force_bounded = force_bounded
@@ -2105,9 +2101,6 @@ contains
     dump_idx = 0
 #endif
 
-    ewrite(1, *) "Entering supermeshing loop"
-
-      ewrite(1, *) "   ...for femdem"
       do ele_B=1,ele_count(new_position)
 
         call galerkin_projection_inner_loop_femdem(ele_B, little_mass_matrix, detJ, local_rhs, conservation_tolerance, stat, &

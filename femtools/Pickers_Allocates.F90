@@ -60,7 +60,6 @@ contains
     character(len = *), optional, intent(in) :: name
     
     call node_owner_finder_set_input(picker%picker_id, positions)
-    ewrite(2, *) "New picker ID: ", picker%picker_id
     
     if(present(name)) then
       call set_picker_name(picker, name)
@@ -81,7 +80,6 @@ contains
     
     if(use_cached_picker(positions)) return
     
-    ewrite(2, *) "Initialising picker for field " // trim(positions%name)
     assert(associated(positions%picker))
     if(associated(positions%picker%ptr)) call remove_picker(positions)
     allocate(positions%picker%ptr)

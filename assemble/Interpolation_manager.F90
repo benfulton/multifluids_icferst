@@ -108,8 +108,6 @@ contains
     
     integer :: stat
 
-    ewrite(1, *) "In interpolate"
-
     call initialise_geostrophic_interpolation(states_old, states_new)
 
     mesh_cnt = option_count("/geometry/mesh")

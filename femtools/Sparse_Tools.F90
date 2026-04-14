@@ -704,8 +704,6 @@ contains
 
     sparsity%FINDRM(NNodes2+1) = entries+1
 
-    ewrite(2,*)"END subroutine compress_sparsity"
-
   end subroutine compress_sparsity
 
   pure function blockstart(matrix, blocki, blockj)

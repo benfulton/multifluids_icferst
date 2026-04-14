@@ -372,8 +372,6 @@ contains
     integer :: i, j
     type(intersections), dimension(:), allocatable :: lmap_AB
 
-    ewrite(1, *) "In advancing_front_intersection_finder"
-
     ! workaround gfortran issue: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85750
     map_AB%length = 0.0
 
@@ -415,8 +413,6 @@ contains
     type(csr_sparsity), pointer :: eelist_A, eelist_B
 
     type(ilist) :: clues
-
-    ewrite(1, *) "In advancing_front_intersection_finder"
 
     ! workaround gfortran issue: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85750
     map_AB%length = 0.0

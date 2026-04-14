@@ -2866,8 +2866,6 @@ contains
         & nelist = lnelist, &
         & eelist = leelist)
     else if(ladd_nnlist .and. ladd_nelist) then
-      ewrite(2, *) "Adding node-node list to mesh " // trim(mesh%name)
-      ewrite(2, *) "Adding node-element list to mesh " // trim(mesh%name)
       allocate(mesh%adj_lists%nnlist)
       allocate(mesh%adj_lists%nelist)
       ! Use these pointers to work around compilers that insist on having mesh

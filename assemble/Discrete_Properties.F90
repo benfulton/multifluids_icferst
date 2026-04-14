@@ -184,8 +184,6 @@ contains
                                         exclude_interpolated=exclude_interpolated, &
                                         exclude_nonreprescribed=exclude_nonreprescribed)) then
       
-        ewrite(2, *) "    Found ", trim(s_field%name)
-          
         call insert(output_state, s_field, trim(input_state%scalar_names(i)))
       end if
     end do
@@ -196,7 +194,6 @@ contains
                                         only_prescribed=only_prescribed, &
                                         exclude_interpolated=exclude_interpolated, &
                                         exclude_nonreprescribed=exclude_nonreprescribed)) then
-        ewrite(2, *) "    Found ", trim(v_field%name)
           
         call insert(output_state, v_field, trim(input_state%vector_names(i)))
       end if
@@ -208,7 +205,6 @@ contains
                                         only_prescribed=only_prescribed, &
                                         exclude_interpolated=exclude_interpolated, &
                                         exclude_nonreprescribed=exclude_nonreprescribed)) then
-        ewrite(2, *) "    Found ", trim(t_field%name)
           
         call insert(output_state, t_field, trim(input_state%tensor_names(i)))
       end if
