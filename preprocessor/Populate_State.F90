@@ -2654,8 +2654,6 @@ contains
 
     type(mesh_type), pointer :: x_mesh
 
-    ewrite(1,*) "In allocate_and_insert_auxilliary_fields"
-
     if (have_option('/solver_options')) then !New schema for ICFERST
       !By default ensure that it does not think this is a steady state case (since the default is not a steady state case)
       call get_option("/solver_options/Non_Linear_Solver", iterations, default=2)
@@ -3269,7 +3267,6 @@ contains
     do dim=1,positions%dim
       domain_bbox(dim, 1) = minval(positions%val(dim,:))
       domain_bbox(dim, 2) = maxval(positions%val(dim,:))
-      ewrite(2,*) "domain_bbox - dim, range =", dim, domain_bbox(dim,:)
     end do
 
     vol = 0.0
@@ -3278,7 +3275,6 @@ contains
     end do
 
     domain_volume = vol
-    ewrite(2,*) "domain_volume =", domain_volume
 
     !If on-the-sphere, calculate the radius of the sphere.
     if (have_option("/geometry/spherical_earth/")) then
